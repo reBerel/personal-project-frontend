@@ -49,10 +49,10 @@ const BoardListPage = () => {
                 <Table aria-label='board table'>
                     <TableHead>
                         <TableRow >
-                            <TableCell align='center' style={{width: '10%'}}>번호</TableCell>
-                            <TableCell align='center' style={{width: '55%'}}>제목</TableCell>
+                            <TableCell align='center' style={{width: '7%'}}>번호</TableCell>
+                            <TableCell align='center' style={{width: '50%'}}>제목</TableCell>
                             <TableCell align='center' style={{width: '10%'}}>작성자</TableCell>
-                            <TableCell align='center' style={{width: '10%'}}>작성일</TableCell>
+                            <TableCell align='center' style={{width: '15%'}}>작성일</TableCell>
                             <TableCell align='center' style={{width: '7%'}}>추천</TableCell>
                             <TableCell align='center' style={{width: '3%'}}>
                                 <RemoveRedEyeIcon fontSize='small'/>
@@ -66,13 +66,13 @@ const BoardListPage = () => {
                         </TableRow>
                         ) : (
                             boards?.map((board) => (
-                                <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{cursor:'pointer'}}>
-                                <TableCell>{board.boardId}</TableCell>
-                                <TableCell>{board.title} {board.replyCount} </TableCell>
-                                <TableCell>{board.writer}</TableCell>
-                                <TableCell>{board.creatData}</TableCell>
-                                <TableCell>{board.likeCount}</TableCell>
-                                <TableCell>{board.readCount}</TableCell>
+                            <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{cursor:'pointer'}}>                        
+                                <TableCell align='center'>{board.boardId}</TableCell>
+                                <TableCell align='center'>{board.title} {board.replyCount} </TableCell>
+                                <TableCell align='center'>{board.writer}</TableCell>
+                                <TableCell align='center'>{board.creatData}</TableCell>
+                                <TableCell align='center'>{board.likeCount ? board.likeCount : '-'}</TableCell>
+                                <TableCell align='center'>{board.readCount ? board.readCount : '-'}</TableCell>
                             </TableRow>
                             )))}                            
                     </TableBody>
