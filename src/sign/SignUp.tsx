@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {Avatar, Button, CssBaseline, TextField, FormControl, FormControlLabel, Checkbox, FormHelperText, Grid, Box, Typography, Container,} from '@mui/material/';
+import {Avatar, Button, CssBaseline, TextField, FormControl, FormControlLabel, Checkbox, FormHelperText, Grid, Box, Typography, Container, colors,} from '@mui/material/';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
+import { green } from '@mui/material/colors';
 
 const FormHelperTexts = styled(FormHelperText)`
   width: 100%;
@@ -16,8 +17,24 @@ const Boxs = styled(Box)`
   padding-bottom: 40px !important;
 `;
 
+const theme = createTheme({
+  components: {
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          padding: ' 10px'
+        },
+      },
+    },    
+  },
+  palette: {
+    primary:{
+      main: green['500'],
+    },
+  },
+});
+
 const Register = () => {
-  const theme = createTheme();
   const [checked, setChecked] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordState, setPasswordState] = useState('');
@@ -93,7 +110,7 @@ const onhandlePost = async (data: any) => {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', }} >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} />
+          <Avatar sx={{ m: 1, bgcolor: '#6BB07B' }} />
           <Typography component="h1" variant="h5"> 회원가입 </Typography>
           <Boxs component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>   
             <FormControl component="fieldset" variant="standard">
@@ -118,10 +135,10 @@ const onhandlePost = async (data: any) => {
                 </Grid>
                 <FormHelperTexts>{passwordError}</FormHelperTexts>               
                 <Grid item xs={12}>
-                  <FormControlLabel control={<Checkbox onChange={handleAgree} color="primary" />}label="회원가입 약관에 동의합니다." />
+                  <FormControlLabel control={<Checkbox onChange={handleAgree} sx={{ color: green["500"] }}/>}label="회원가입 약관에 동의합니다." />
                 </Grid>
               </Grid>
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} size="large"> 회원가입 </Button>
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, backgroundColor:"#6BB07B", color: 'white' }} size="large"> 회원가입 </Button>
             </FormControl>
             <FormHelperTexts>{registerError}</FormHelperTexts>
           </Boxs>
