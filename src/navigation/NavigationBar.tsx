@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import { Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
+import { Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ThemeProvider, createTheme, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -12,10 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import {Search, SearchIconWrapper, StyledInputBase, drawerWidth, AppBar, DrawerHeader } from './NavigationComponent'
-
-
-
-
+import {  } from '@mui/material/colors';
 
 export default function NavigationBar() {
   const theme = useTheme();
@@ -30,8 +27,9 @@ export default function NavigationBar() {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#6BB07B' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -41,7 +39,7 @@ export default function NavigationBar() {
             sx={{ mr: 5 }}
           >
           </IconButton>
-          <Typography variant="h6" component={Link} to="/key-we-board-page/list" style={{ textDecoration: "none" }}>
+          <Typography color='white' variant="h6" component={Link} to="/key-we-board-page/list" style={{ textDecoration: "none" }}>
             KeyWe |
           </Typography>
           <Box sx={{ flexGrow: 0.9}}/>
@@ -111,5 +109,6 @@ export default function NavigationBar() {
         </List>
       </Drawer>      
     </Box>
+    </ThemeProvider>
   );
 }

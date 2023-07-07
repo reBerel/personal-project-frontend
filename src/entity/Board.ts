@@ -3,7 +3,7 @@ export interface Board {
     title: string;
     writer: string;
     content: string;
-    creatData: string;
+    createData: string;
     modifyDate: string;
     likeCount: number;
     readCount: number;
