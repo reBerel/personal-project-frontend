@@ -1,6 +1,5 @@
-import { InputBase, alpha, makeStyles, styled } from "@mui/material";
+import { InputBase, alpha, createTheme, makeStyles, styled } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-
 
 export const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -95,3 +94,15 @@ export const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open
       marginRight: 0,
     }),
   }));
+
+export const theme = createTheme({
+    components: {
+      MuiAppBar: {
+        styleOverrides: {
+          colorPrimary: {
+            Color: "green"
+          }
+        }
+      }
+    }
+  });
