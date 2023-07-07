@@ -1,10 +1,11 @@
-import { Button, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme, makeStyles } from '@mui/material'
+import { Button, CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme, makeStyles } from '@mui/material'
 import React, { useEffect } from 'react'
 import useBoardStore from '../store/BoardStore'
 import { fetchBoardList, useBoardQuery } from '../api/BoardApi'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import BoardPage from './BoardPage'
 
 const theme = createTheme({
     components: {
@@ -17,6 +18,13 @@ const theme = createTheme({
           },
         },
       },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            padding: '10px 15px'
+          },
+        },
+      },    
     },
   });
 
@@ -49,7 +57,8 @@ const BoardListPage = () => {
                 <Table aria-label='board table'>
                     <TableHead>
                         <TableRow >
-                            <TableCell align='center' style={{width: '7%'}}>번호</TableCell>
+                            
+                            <TableCell align='center' style={{width: '7%'}}>No.</TableCell>
                             <TableCell align='center' style={{width: '50%'}}>제목</TableCell>
                             <TableCell align='center' style={{width: '10%'}}>작성자</TableCell>
                             <TableCell align='center' style={{width: '15%'}}>작성일</TableCell>
@@ -68,9 +77,9 @@ const BoardListPage = () => {
                             boards?.map((board) => (
                             <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{cursor:'pointer'}}>                        
                                 <TableCell align='center'>{board.boardId}</TableCell>
-                                <TableCell align='center'>{board.title} {board.replyCount} </TableCell>
+                                <TableCell align='center'>{board.title} [{board.replyCount ? board.replyCount : '-'}]</TableCell>                                
                                 <TableCell align='center'>{board.writer}</TableCell>
-                                <TableCell align='center'>{board.creatData}</TableCell>
+                                <TableCell align='center'>{board.createData}</TableCell>
                                 <TableCell align='center'>{board.likeCount ? board.likeCount : '-'}</TableCell>
                                 <TableCell align='center'>{board.readCount ? board.readCount : '-'}</TableCell>
                             </TableRow>
@@ -78,7 +87,14 @@ const BoardListPage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Grid container spacing={2}>
+            <Grid item xs={2}>
             <Button component={Link} to="/key-we-board-page/register" color='error' style={{ marginTop: '3px'}}>글 작성</Button>
+            </Grid>
+            <Grid item xs={10}>
+            <BoardPage/>
+            </Grid>
+            </Grid>
         </Container>
         </ThemeProvider>
     )
