@@ -1,27 +1,86 @@
-import { Box, Button, Container, TextField } from '@mui/material'
-import React from 'react'
+import { FormControlLabel, Box, Button, Checkbox, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, createTheme } from '@mui/material'
+import React, { useEffect } from 'react'
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import BoardListPageSub from './BoardListPageSub';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Favorite from '@mui/icons-material/Favorite';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { green } from '@mui/material/colors';
+import { Link } from 'react-router-dom';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+const theme = createTheme({
+  components: {
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          padding: ' 10px'
+        },
+      },
+    },    
+  },
+  palette: {
+    primary:{
+      main: green['500'],
+    },
+  },
+});
 
 const BoardReadPage = () => {
+//   const { data: boards, isLoading, isError } = useBoardQuery()
+//   const setBoards = useBoardStore((state) => state.setBoards)
+//   const navigate = useNavigate()
+//   useEffect(() => {
+//     const fetchData = async () => {
+//         const data = await fetchBoardList()
+//         setBoards(data)
+//     }
+//     fetchData()
+// })
+
   return (
+    <ThemeProvider theme={theme}>
     <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
-    <TextField label="작성자" name="writer" sx={{ borderRadius: '4px' }}/>
-    {/* <TextField select label="카테고리" name='boardCategory' variant="outlined" >
-          <MenuItem>Small</MenuItem>
-          <MenuItem>Medium</MenuItem>
-          <MenuItem>Large</MenuItem>
-        </TextField>   */}
-      <Box display='contents'>
-        </Box>
-        <Box display="flex" flexDirection="column" >
-        <TextField label="제목" name="title" sx={{ borderRadius: '10px' }}/>            
-
-        <TextField label="내용" name="content" multiline 
-                  minRows={20} maxRows={20} sx={{ borderRadius: '4px' }}/>
-      </Box>
-      <Button type="submit">작성 완료</Button>
-  </Container>
-
+      <TableContainer component={Paper}>
+                <Table aria-label='board table'>
+                    <TableHead>
+                        <TableRow >                          
+                                <TableCell align='left'>No.</TableCell>
+                                <TableCell colSpan={3} align='left'>제목</TableCell>      
+                                <TableCell>
+                                <Checkbox sx={{color: green['500']}} {...label} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />}/>
+                                  </TableCell>                 
+                              </TableRow>
+                              <TableRow>
+                                <TableCell align='left'style={{width: '14%'}}>작성자</TableCell>
+                                <TableCell style={{width: '43%'}}></TableCell>
+                                <TableCell align='center'>작성일</TableCell>
+                                <TableCell align='left' style={{width: '10%'}}>추천</TableCell>
+                                <TableCell align='left' style={{width: '8%'}}>
+                              <RemoveRedEyeIcon fontSize='small'/>
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                </Table>                
+            </TableContainer>
+            <TextField disabled label="내용" name="content" multiline 
+                  minRows={20} maxRows={30} sx={{ borderRadius: '4px', width: '850px', marginTop: '10px', marginBottom: '5px'}}/>
+                  <Button component={Link} to="/key-we-board-page/modify/:boardId">수정</Button>
+            <Grid container spacing={2}>
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'right' }}>
+              <Checkbox {...label} icon={<FavoriteBorder />} checkedIcon={<Favorite />} sx={{ display: 'flex', alignItems: 'right', justifyContent: 'right', color: green['500']}} />
+            </Grid>
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'left' }}>
+              <Checkbox {...label} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} sx={{ display: 'flex',alignItems: 'left', justifyContent: 'left', color: green['500']}} />
+            </Grid>
+          </Grid>
+    </Container>
+  <BoardListPageSub/>
+  </ThemeProvider>
   )
 }
 
 export default BoardReadPage
+
