@@ -99,14 +99,14 @@ const onhandlePost = async (data: any) => {
             <FormControl component="fieldset" variant="standard">
             <Grid container spacing={2}>
             <Grid item xs={12}>
-                  <TextField required fullWidth id="nickName" name="nickName" label="별명" error={nameError !== '' || false} />
+                  <TextField autoFocus required fullWidth id="nickName" name="nickName" label="별명" error={nameError !== '' || false} />
                 </Grid>     
                 <Grid item xs={12}>
                   <TextField required fullWidth id="name" name="name" label="이름" error={nameError !== '' || false} />
                 </Grid>              
                 <FormHelperTexts>{nameError}</FormHelperTexts>
                 <Grid item xs={12}>
-                  <TextField required autoFocus fullWidth type="email" id="email" name="email" label="이메일" error={emailError !== '' || false} />
+                  <TextField required fullWidth type="email" id="email" name="email" label="이메일" error={emailError !== '' || false} />
                 </Grid>
                 <FormHelperTexts>{emailError}</FormHelperTexts>
                 <Grid item xs={12}>

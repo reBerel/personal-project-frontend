@@ -5,9 +5,9 @@ const SignIn = () => {
   return (
     <Container maxWidth="xs"  style={{ marginTop: "30px" }}>
     <Box display="flex" flexDirection="column">
-       <TextField label="아이디" sx={{p:0.8}}></TextField>
+       <TextField autoFocus label="아이디" sx={{p:0.8}}></TextField>
        <TextField label="비밀번호" sx={{p:0.8}}></TextField>    
-       <Button style={{marginTop: "20px"}} variant="contained" color="primary">SIGN IN</Button>
+       <Button style={{marginTop: "20px"}} variant="contained" sx={{backgroundColor:"#6BB07B"}} >SIGN IN</Button>
        </Box>
        <Grid container>
             <Grid item xs>
