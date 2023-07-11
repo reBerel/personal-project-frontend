@@ -1,11 +1,11 @@
-import { Button, CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme, makeStyles } from '@mui/material'
+import { CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme } from '@mui/material'
 import React, { useEffect } from 'react'
-import useBoardStore from '../store/BoardStore'
-import { fetchBoardList, useBoardQuery } from '../api/BoardApi'
+import useBoardStore from '../../store/BoardStore'
+import { fetchBoardList, useBoardQueryList } from '../../api/BoardApi'
 import { useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import BoardPage from './BoardPage'
+import BoardListGridComponent from '../component/BoardListGridComponent'
+import BoardCategoryComponent from '../component/BoardCategoryComponent'
 
 const theme = createTheme({
     components: {
@@ -29,7 +29,7 @@ const theme = createTheme({
   });
 
 const BoardListPage = () => {
-    const { data: boards, isLoading, isError } = useBoardQuery()
+    const { data: boards, isLoading, isError } = useBoardQueryList()
     const setBoards = useBoardStore((state) => state.setBoards)
     const navigate = useNavigate()
 
@@ -52,12 +52,12 @@ const BoardListPage = () => {
 
     return (
         <ThemeProvider theme={theme}>
-        <Container maxWidth="md" style={{marginTop: '2rem'}}>
+        <Container maxWidth="md" style={{marginTop: '2rem', minHeight: '100%', position: 'relative'}}>
+        <BoardCategoryComponent/>
             <TableContainer component={Paper}>
                 <Table aria-label='board table'>
                     <TableHead>
-                        <TableRow >
-                            
+                        <TableRow >                            
                             <TableCell align='center' style={{width: '7%'}}>No.</TableCell>
                             <TableCell align='center' style={{width: '50%'}}>제목</TableCell>
                             <TableCell align='center' style={{width: '10%'}}>작성자</TableCell>
@@ -79,7 +79,7 @@ const BoardListPage = () => {
                                 <TableCell align='center'>{board.boardId}</TableCell>
                                 <TableCell align='center'>{board.title} [{board.replyCount ? board.replyCount : '-'}]</TableCell>                                
                                 <TableCell align='center'>{board.writer}</TableCell>
-                                <TableCell align='center'>{board.createData}</TableCell>
+                                <TableCell align='center'>{board.createDate}</TableCell>
                                 <TableCell align='center'>{board.likeCount ? board.likeCount : '-'}</TableCell>
                                 <TableCell align='center'>{board.readCount ? board.readCount : '-'}</TableCell>
                             </TableRow>
@@ -87,14 +87,7 @@ const BoardListPage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Grid container spacing={2}>
-            <Grid item xs={2}>
-            <Button component={Link} to="/key-we-board-page/register" color='error' style={{ marginTop: '3px'}}>글 작성</Button>
-            </Grid>
-            <Grid item xs={10}>
-            <BoardPage/>
-            </Grid>
-            </Grid>
+          <BoardListGridComponent/>
         </Container>
         </ThemeProvider>
     )

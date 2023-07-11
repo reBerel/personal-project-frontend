@@ -1,8 +1,11 @@
-import { Box, Button,  Container,  TextField } from '@mui/material'
+import { Box, Button,  Container,  TextField, styled } from '@mui/material'
 import React from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import { registerBoard } from '../api/BoardApi'
+import { registerBoard } from '../../api/BoardApi'
+import BoardRegisterCategoryComponent from '../component/BoardRegisterCategoryComponent'
+
+// const TextField = styled
 
 const BoardRegisterPage = () => {
   const navigate = useNavigate()
@@ -10,7 +13,7 @@ const BoardRegisterPage = () => {
   const mutation = useMutation(registerBoard, {
     onSuccess: (data) => {
       queryClient.setQueryData('board',data)
-      navigate(`/key-we-board-app/read/${data.boardId}`)
+      navigate(`/key-we-board-page/read/${data.boardId}`)
     }
   })
 
@@ -39,12 +42,8 @@ const BoardRegisterPage = () => {
   return (
     <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
     <form onSubmit={handleSubmit}>
-    <TextField label="작성자" name="writer" sx={{ borderRadius: '4px' }}/>
-    {/* <TextField select label="카테고리" name='boardCategory' variant="outlined" >
-          <MenuItem>Small</MenuItem>
-          <MenuItem>Medium</MenuItem>
-          <MenuItem>Large</MenuItem>
-        </TextField>   */}
+    <TextField label="작성자" name="writer" sx={{ borderRadius: '4px'}}/>
+    <BoardRegisterCategoryComponent/>
       <Box display='contents'>
         </Box>
         <Box display="flex" flexDirection="column" >
