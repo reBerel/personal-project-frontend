@@ -1,11 +1,28 @@
-import { Box, Button,  Container,  TextField, styled } from '@mui/material'
+import { Box, Button,  Container,  Grid,  TextField, ThemeProvider, createTheme, styled } from '@mui/material'
 import React from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { registerBoard } from '../../api/BoardApi'
 import BoardRegisterCategoryComponent from '../component/BoardRegisterCategoryComponent'
+import { green } from '@mui/material/colors'
 
-// const TextField = styled
+const theme = createTheme({
+  components: {
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          padding: ' 10px'
+        },
+      },
+    },    
+  },
+  palette: {
+    primary:{
+      main: green['500'],
+    },
+  },
+});
+
 
 const BoardRegisterPage = () => {
   const navigate = useNavigate()
@@ -40,22 +57,30 @@ const BoardRegisterPage = () => {
 
 
   return (
-    <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
+    <ThemeProvider theme={theme}>
+    <Container maxWidth="md" sx={{ marginTop: '2rem'  }}>
     <form onSubmit={handleSubmit}>
+    <Grid container spacing={2}>
+          <Grid item xs={4}>
     <TextField label="작성자" name="writer" sx={{ borderRadius: '4px'}}/>
+    </Grid>
+    <Grid item xs={2}>
     <BoardRegisterCategoryComponent/>
+    </Grid>
+    </Grid>
+    {/* writer -> User.nickName */}
       <Box display='contents'>
         </Box>
         <Box display="flex" flexDirection="column" >
         <TextField label="제목" name="title" sx={{ borderRadius: '10px' }}/>            
 
         <TextField label="내용" name="content" multiline 
-                  minRows={20} maxRows={20} sx={{ borderRadius: '4px' }}/>
+                  minRows={20} maxRows={20} sx={{ borderRadius: '4px',marginTop: '10px' }}/>
       </Box>
       <Button type="submit">작성 완료</Button>
     </form>  
   </Container>
-
+  </ThemeProvider>
   )
 }
 

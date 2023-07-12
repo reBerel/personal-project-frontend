@@ -15,7 +15,7 @@ const BoardListGridComponent = () => {
     <Container>
           <Grid container spacing={2}>
             <Grid item xs={3}>
-            <Button onClick={handleRegisterClick} color="error" style={{ marginTop: '4px' }}>글 작성</Button>            
+            <Button onClick={handleRegisterClick} style={{ marginTop: '4px' }} >글 작성</Button>            
           </Grid>
             <Grid item xs={4}>
             <Box/>            

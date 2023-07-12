@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BoardListGridComponent from '../component/BoardListGridComponent'
 import BoardCategoryComponent from '../component/BoardCategoryComponent'
+import { green } from '@mui/material/colors'
 
 const theme = createTheme({
     components: {
@@ -13,7 +14,7 @@ const theme = createTheme({
         styleOverrides: {
           root: {
             '& .MuiInputBase-root': {
-              padding: '5px 12px', // 입력 필드의 내부 여백 설정
+              padding: '5px 12px',
             },
           },
         },
@@ -25,6 +26,11 @@ const theme = createTheme({
           },
         },
       },    
+    },
+    palette: {
+      primary:{
+        main: green['500'],
+      },
     },
   });
 
@@ -52,7 +58,7 @@ const BoardListPage = () => {
 
     return (
         <ThemeProvider theme={theme}>
-        <Container maxWidth="md" style={{marginTop: '2rem', minHeight: '100%', position: 'relative'}}>
+        <Container maxWidth="md" style={{marginTop: '1.5rem', minHeight: '100%', position: 'relative'}}>
         <BoardCategoryComponent/>
             <TableContainer component={Paper}>
                 <Table aria-label='board table'>

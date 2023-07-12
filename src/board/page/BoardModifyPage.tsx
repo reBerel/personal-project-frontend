@@ -85,8 +85,7 @@ const BoardModifyPage = () => {
   return (
     <ThemeProvider theme={theme}>
     <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
-    <TextField disabled label="작성자" name="writer" sx={{ borderRadius: '4px' }}/>  
-        <TextField label="작성일자" name="createDate" disabled value={ board || '' } sx={{ borderRadius: '4px' }}/>
+    <TextField disabled label="작성자" name="writer" sx={{ borderRadius: '4px' }}/>          
       <Box display='contents'> </Box>
         <Box display="flex" flexDirection="column" >
         <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} onChange={(e) => setTitle(e.target.value)}/>            

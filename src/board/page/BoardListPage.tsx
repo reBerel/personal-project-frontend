@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BoardCategoryComponent from '../component/BoardCategoryComponent'
 import BoardListGridComponent from '../component/BoardListGridComponent'
+import { green } from '@mui/material/colors'
 
 const theme = createTheme({
     components: {
@@ -25,6 +26,11 @@ const theme = createTheme({
           },
         },
       },    
+    },
+    palette: {
+      primary:{
+        main: green['500'],
+      },
     },
   });
 
