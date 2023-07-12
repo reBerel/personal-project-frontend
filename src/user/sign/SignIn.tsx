@@ -20,6 +20,9 @@ const theme = createTheme({
 });
 
 const SignIn = () => {
+
+
+  
   return (
     <ThemeProvider theme={theme}>
     <Container maxWidth="xs"  style={{ marginTop: "30px" }}>
@@ -38,6 +41,7 @@ const SignIn = () => {
        <Link href="/key-we-board-page/sign-up" underline="none" fontSize="13px">회원가입하기</Link>
        </Box>
        </Grid>
+       
        </Grid>
        {/* oauth 자리 */}
     </Container>
