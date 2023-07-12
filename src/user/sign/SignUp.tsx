@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {Avatar, Button, CssBaseline, TextField, FormControl, FormControlLabel, Checkbox, FormHelperText, Grid, Box, Typography, Container, colors,} from '@mui/material/';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { green } from '@mui/material/colors';
+import springAxiosInst from '../../utility/axiosInstance';
 
 const FormHelperTexts = styled(FormHelperText)`
   width: 100%;
@@ -34,36 +34,23 @@ const theme = createTheme({
   },
 });
 
-const Register = () => {
-  const [checked, setChecked] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordState, setPasswordState] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [nameError, setNameError] = useState('');
-  const [registerError, setRegisterError] = useState('');
-  const navigate = useNavigate();
 
-  const handleAgree = (event: any) => {
-    setChecked(event.target.checked);
-  };
 
- 
-const onhandlePost = async (data: any) => {
-  const { email, name, password } = data;
-  const postData = { email, name, password };
+const SignUp = () => {
+const [checked, setChecked] = useState(false);
+const [emailError, setEmailError] = useState('');
+const [passwordState, setPasswordState] = useState('');
+const [passwordError, setPasswordError] = useState('');
+const [nameError, setNameError] = useState('');
+const [registerError, setRegisterError] = useState('');
+const navigate = useNavigate();
 
-  try {
-    const response = await axios.post('/user/sign-up', postData);
-    console.log(response, '성공');
-    navigate('/login');
-  } catch (error) {
-    console.log(error);
-    setRegisterError('회원가입에 실패하였습니다. 다시한번 확인해 주세요.');
-  }
+const handleAgree = (event: any) => {
+  setChecked(event.target.checked);
 };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+const handleSubmit = (e: any) => {
+  e.preventDefault();
 
     const data = new FormData(e.currentTarget);
     const joinData = {
@@ -73,7 +60,7 @@ const onhandlePost = async (data: any) => {
       password: data.get('password') as string,
       rePassword: data.get('rePassword') as string,
     };
-    const { email, name, password, rePassword } = joinData;
+    const { nickName, email, name, password, rePassword } = joinData;
 
     const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (!emailRegex.test(email)) setEmailError('올바른 이메일 형식이 아닙니다.');
@@ -102,6 +89,20 @@ const onhandlePost = async (data: any) => {
       checked
     ) {
       onhandlePost(joinData);
+    }
+  };  
+
+  const onhandlePost = async (data: any) => {
+    const { email, name, password } = data;
+    const postData = { email, name, password };
+  
+    try {
+      const response = await springAxiosInst.post('/user/sign-up', postData);
+      console.log(response, '성공');
+      navigate('/key-we-board-page/sign-in');
+    } catch (error) {
+      console.log(error);
+      setRegisterError('회원가입에 실패하였습니다. 다시한번 확인해 주세요.');
     }
   };
 
@@ -148,4 +149,4 @@ const onhandlePost = async (data: any) => {
   );
 };
 
-export default Register;
+export default SignUp;

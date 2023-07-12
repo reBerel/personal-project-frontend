@@ -3,5 +3,5 @@ export interface User {
     nickName: string;
     name: string;
     email: string;
-    signUpData: string;
+    password: string;
 }
