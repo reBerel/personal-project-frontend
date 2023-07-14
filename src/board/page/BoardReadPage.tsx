@@ -1,5 +1,5 @@
 import { Button, Checkbox, Container, Grid, Paper, Table, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, createTheme } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BoardListPageSub from './BoardListPageSub';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
@@ -32,18 +32,22 @@ const theme = createTheme({
 
 const BoardReadPage = () => {
   const { boardId } = useParams()
-
   const{data: board } = useBoardQuery(boardId || '')
+  const[isBookmarkChecked, setBookmarkChecked] = useState(false);
+
+  const handleBookmark = () => {
+    setBookmarkChecked((prev: any) => !prev);    
+  }
   
+
   useEffect(() => {
     const fetchBoardData = async () => {
       const data = await fetchBoard(boardId || '');
       console.log(data);
     };
     fetchBoardData();
-  }, [boardId])
-  
-
+  }, [boardId]
+)
 
   return (
     <ThemeProvider theme={theme}>
@@ -55,8 +59,7 @@ const BoardReadPage = () => {
                                 <TableCell align='left'>No. {boardId} </TableCell>
                                 <TableCell colSpan={3} align='left'>제목 {board?.title} [{board?.replyCount ? board.replyCount : 0}] </TableCell>      
                                 <TableCell>
-                                <Checkbox sx={{color: green['500']}} {...label} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />}/>
-                                
+                                <Checkbox checked={isBookmarkChecked} onChange={ () => handleBookmark() } sx={{color: green['500']}} {...label} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />}/>                                
                                   </TableCell>                 
                               </TableRow>
                               <TableRow>
@@ -80,7 +83,7 @@ const BoardReadPage = () => {
               <Checkbox {...label} icon={<FavoriteBorder />} checkedIcon={<Favorite />} sx={{ display: 'flex', alignItems: 'right', justifyContent: 'right', color: green['500']}} />
             </Grid>
             <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'left' }}>
-              <Checkbox {...label} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} sx={{ display: 'flex',alignItems: 'left', justifyContent: 'left', color: green['500']}} />
+              <Checkbox checked={isBookmarkChecked} onChange={ () => handleBookmark() } {...label} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} sx={{ display: 'flex',alignItems: 'left', justifyContent: 'left', color: green['500']}} />
             </Grid>
           </Grid>
     </Container>
