@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Avatar, Button, CssBaseline, TextField, FormControl, FormControlLabel, Checkbox, FormHelperText, Grid, Box, Typography, Container, colors,} from '@mui/material/';
+import {Avatar, Button, CssBaseline, TextField, FormControl, FormControlLabel, Checkbox, FormHelperText, Grid, Box, Typography, Container} from '@mui/material/';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 import { green } from '@mui/material/colors';
@@ -33,15 +33,22 @@ const theme = createTheme({
     },
   },
 });
-
+interface JoinData {
+  nickName: string;
+  name: string;
+  email: string;
+  password: string;
+  rePassword: string;
+}
 
 
 const SignUp = () => {
 const [checked, setChecked] = useState(false);
+const [nickNameError, setNickNameError] = useState('');
+const [nameError, setNameError] = useState('');
 const [emailError, setEmailError] = useState('');
 const [passwordState, setPasswordState] = useState('');
 const [passwordError, setPasswordError] = useState('');
-const [nameError, setNameError] = useState('');
 const [registerError, setRegisterError] = useState('');
 const navigate = useNavigate();
 
@@ -53,14 +60,19 @@ const handleSubmit = (e: any) => {
   e.preventDefault();
 
     const data = new FormData(e.currentTarget);
-    const joinData = {
+    const joinData: JoinData = {
       nickName: data.get('nickName') as string,
-      email: data.get('email') as string,
       name: data.get('name') as string,
+      email: data.get('email') as string,
       password: data.get('password') as string,
       rePassword: data.get('rePassword') as string,
     };
     const { nickName, email, name, password, rePassword } = joinData;
+
+
+    const nickNameRegex = /^[가-힣a-zA-Z]+$/;
+    if (!nickNameRegex.test(nickName)) setNickNameError('띄어쓰기, 특수문자는 넣을 수 없습니다.');
+    else setNickNameError('');
 
     const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     if (!emailRegex.test(email)) setEmailError('올바른 이메일 형식이 아닙니다.');
@@ -81,10 +93,12 @@ const handleSubmit = (e: any) => {
     if (!checked) alert('회원가입 약관에 동의해주세요.');
 
     if (
+      nickNameRegex.test(nickName) &&
+      nameRegex.test(name) &&
       emailRegex.test(email) &&
       passwordRegex.test(password) &&
       password === rePassword &&
-      nameRegex.test(name) &&
+      
 
       checked
     ) {
@@ -93,8 +107,8 @@ const handleSubmit = (e: any) => {
   };  
 
   const onhandlePost = async (data: any) => {
-    const { email, name, password } = data;
-    const postData = { email, name, password };
+    const { nickName, name, email,  password } = data;
+    const postData = {nickName, name, email,  password  };
   
     try {
       const response = await springAxiosInst.post('/user/sign-up', postData);
@@ -117,8 +131,9 @@ const handleSubmit = (e: any) => {
             <FormControl component="fieldset" variant="standard">
             <Grid container spacing={2}>
             <Grid item xs={12}>
-                  <TextField autoFocus required fullWidth id="nickName" name="nickName" label="별명" error={nameError !== '' || false} />
+                  <TextField autoFocus required fullWidth id="nickName" name="nickName" label="별명"  error={nickNameError !== '' || false}/>
                 </Grid>     
+                <FormHelperTexts>{nickNameError}</FormHelperTexts>
                 <Grid item xs={12}>
                   <TextField required fullWidth id="name" name="name" label="이름" error={nameError !== '' || false} />
                 </Grid>              
