@@ -10,13 +10,13 @@ export default function SimpleBottomNavigation() {
 
   return (
     <Box>
-      <BottomNavigation showLabels value={value} onChange={(event, newValue) => { setValue(newValue); }} sx={{ height: '2.5rem', marginBottom: '5px'}} component={Paper}>
-      <BottomNavigationAction label="Main"  />
-        <BottomNavigationAction label="Spring"  />
-        <BottomNavigationAction label="Pytion"  />
-        <BottomNavigationAction label="Vue"  />
-        <BottomNavigationAction label="React"  />
-        <BottomNavigationAction label="Question"  />
+      <BottomNavigation showLabels value={value} onChange={(event, newValue) => { setValue(newValue); }} sx={{ height: '2.5rem', marginBottom: '5px' }} component={Paper}>
+        <BottomNavigationAction label="Main" />
+        <BottomNavigationAction label="Spring" />
+        <BottomNavigationAction label="Pytion" />
+        <BottomNavigationAction label="Vue" />
+        <BottomNavigationAction label="React" />
+        <BottomNavigationAction label="Question" />
       </BottomNavigation>
     </Box>
   );

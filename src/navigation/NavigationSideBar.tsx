@@ -9,23 +9,23 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 
 const NavigationSideBar = () => {
-    const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
-    const handleDrawerClose = () => {
-        setOpen(false);
-      };
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
   return (
     <Container>
-        <IconButton color="inherit" aria-label="open drawer" edge="end" onClick={handleDrawerOpen} sx={{ ...(open && { display: 'none' }) }}>
-            <MenuIcon/>
-          </IconButton>
-        <Drawer sx={{ width: drawerWidth, flexShrink: 0, '& .MuiDrawer-paper': { width: drawerWidth }}} variant="persistent"anchor="right" open={open}>
+      <IconButton color="inherit" aria-label="open drawer" edge="end" onClick={handleDrawerOpen} sx={{ ...(open && { display: 'none' }) }}>
+        <MenuIcon />
+      </IconButton>
+      <Drawer sx={{ width: drawerWidth, flexShrink: 0, '& .MuiDrawer-paper': { width: drawerWidth } }} variant="persistent" anchor="right" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
+            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
@@ -54,7 +54,7 @@ const NavigationSideBar = () => {
             </ListItem>
           ))}
         </List>
-      </Drawer> 
+      </Drawer>
     </Container>
   )
 }

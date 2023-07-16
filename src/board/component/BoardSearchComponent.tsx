@@ -18,7 +18,7 @@ export default function BoardSearchComponent() {
   };
 
   return (
-    <Container sx={{marginLeft: '3.5rem'}}>
+    <Container sx={{ marginLeft: '3.5rem' }}>
       <Grid container spacing={2} alignItems="left">
         <Grid item xs={3}>
           <FormControl variant="standard" sx={{ minWidth: 70, marginTop: '7px' }}>

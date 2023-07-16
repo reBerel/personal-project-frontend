@@ -15,15 +15,15 @@ export default function BoardRegisterCategoryComponent() {
   return (
     <div>
       <Container  >
-      <FormControl variant="standard" sx={{ minWidth: 80 }}>
-        <InputLabel id="demo-simple-select-standard-label" sx={{fontSize: '12px' }}>카테고리</InputLabel>
-        <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={category} onChange={handleChange} label="카테고리">
-          <MenuItem value=""> <em>없음</em> </MenuItem>
-          <MenuItem value={10}>제목</MenuItem>
-          <MenuItem value={20}>작성자</MenuItem>
-          <MenuItem value={30}>작성일</MenuItem>
-        </Select>
-      </FormControl>
+        <FormControl variant="standard" sx={{ minWidth: 80 }}>
+          <InputLabel id="demo-simple-select-standard-label" sx={{ fontSize: '12px' }}>카테고리</InputLabel>
+          <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={category} onChange={handleChange} label="카테고리">
+            <MenuItem value=""> <em>없음</em> </MenuItem>
+            <MenuItem value={10}>제목</MenuItem>
+            <MenuItem value={20}>작성자</MenuItem>
+            <MenuItem value={30}>작성일</MenuItem>
+          </Select>
+        </FormControl>
       </Container>
     </div>
   );

@@ -9,7 +9,7 @@ const BoardPage = () => {
   };
 
   return (
-    <Pagination page={page} count={10} siblingCount={2} boundaryCount={1} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton sx={{marginTop: '0.5rem'}}/> 
+    <Pagination page={page} count={10} siblingCount={2} boundaryCount={1} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton sx={{ marginTop: '0.5rem' }} />
   );
 };
 
