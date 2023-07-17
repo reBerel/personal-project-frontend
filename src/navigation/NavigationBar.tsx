@@ -38,11 +38,8 @@ export default function NavigationBar() {
             </Search>
             <Grid item xs={1.6}>
               {
-                user.uid ?
-                  <div>
-                    <span>{user.nickName}님 </span>
-                    <Button onClick={() => signOut(getAuth())} color="inherit">로그아웃</Button>
-                  </div>
+                user.uid ?                  
+                    <Button onClick={() => signOut(getAuth())} color="inherit">로그아웃</Button>                  
                   : <Button component={Link} to="/key-we-board-page/sign-in" color="inherit">로그인</Button>
               }
             </Grid>
