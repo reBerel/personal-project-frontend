@@ -4,6 +4,8 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import useBoardStore from '../../store/BoardStore';
+import useUserStore from '../../store/UserStore';
 
 
 const gridStyle: React.CSSProperties = {
@@ -12,10 +14,30 @@ const gridStyle: React.CSSProperties = {
 
 export default function BoardSearchComponent() {
   const [category, setCategory] = React.useState('');
-
+  const title = useBoardStore((state) => state.boards)
+  const createDate = useBoardStore((state) => state.boards)
+  const modifyDate = useBoardStore((state) => state.boards)
+  const nickName = useUserStore((state) => state.user)
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
   };
+
+  const searchHandle = () => {
+    // if (search === 10) {
+    //   return title
+    // }
+    // if (search === 20) {
+    //   return nickName
+    // }
+    //   if (search === 30) {
+    //     if (modifyDate) {
+    //       return "modifyDate";
+    //     } else {
+    //       return "createDate";
+    //     }
+    //   }
+    // return null;
+  }
 
   return (
     <Container sx={{ marginLeft: '3.5rem' }}>
@@ -34,7 +56,7 @@ export default function BoardSearchComponent() {
         <Grid item xs={9} style={gridStyle}>
           <Paper component="form" sx={{ display: 'flex', alignItems: 'center', width: 200, height: 24, marginTop: 3, fontSize: '10px' }}>
             <InputBase sx={{ ml: 1, flex: 1 }} inputProps={{ 'aria-label': '' }} />
-            <IconButton type="button" aria-label="search">
+            <IconButton onClick={searchHandle} type="button" aria-label="search">
               <SearchIcon />
             </IconButton>
           </Paper>
