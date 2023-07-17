@@ -1,5 +1,5 @@
 import { UseMutationResult, UseQueryResult, useMutation, useQuery, useQueryClient } from "react-query";
-import { Board } from "../entity/Board";
+import { Board, ModifyBoard } from "../entity/Board";
 import useBoardStore from "../store/BoardStore";
 import springAxiosInst from "../utility/axiosInstance";
 
@@ -34,21 +34,21 @@ export const useBoardQuery = (boardId: string): UseQueryResult<Board | null, unk
     return useQuery(['board', boardId], () => fetchBoard(boardId))
 }
 
-export const updateBoard = async(updatedData: Board): Promise<Board> => {
+export const updateBoard = async(updatedData: ModifyBoard): Promise<ModifyBoard> => {
     const { boardId, title,  writer, content } = updatedData
 
-    const response = await springAxiosInst.put<Board>(
+    const response = await springAxiosInst.put<ModifyBoard>(
         `/board/${boardId}`, {title, content,writer})
 
         return response.data
 }
 
-export const useBoardUpdateMutation = (): UseMutationResult<Board, unknown, Board> => {
+export const useBoardUpdateMutation = (): UseMutationResult<ModifyBoard, unknown, ModifyBoard> => {
     const QueryClient = useQueryClient()
 
     return useMutation(updateBoard, {
         onSuccess: (data) => {
-            QueryClient.setQueryData(['board', data.boardId],data)
+            QueryClient.setQueryData(['modifyBoard', data.boardId],data)
 }})}
 
 export const deleteBoard = async(boardId: string): Promise<void> => {

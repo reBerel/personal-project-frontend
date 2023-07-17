@@ -9,3 +9,9 @@ export interface Board {
     readCount: number;
     replyCount: number;
 }
+export interface ModifyBoard{
+    boardId: string | undefined;
+    title: string;
+    writer: string;
+    content: string;
+}

@@ -10,9 +10,6 @@ import { green } from '@mui/material/colors';
 import { Link, useParams } from 'react-router-dom';
 import { fetchBoard, useBoardQuery } from '../../api/BoardApi';
 
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-
 const theme = createTheme({
   components: {
     MuiTableCell: {
@@ -77,7 +74,7 @@ const BoardReadPage = () => {
         </TableContainer>
         <TextField disabled name="content" multiline value={board?.content}
           minRows={20} maxRows={30} sx={{ borderRadius: '4px', width: '850px', marginTop: '10px', marginBottom: '5px' }} />
-        <Button component={Link} to="/key-we-board-page/modify/:boardId">수정</Button>
+        <Button component={Link} to={`/key-we-board-page/modify/${boardId}`}>수정</Button>
         <Grid container spacing={2}>
           <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'right' }}>
             <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} sx={{ display: 'flex', alignItems: 'right', justifyContent: 'right', color: green['500'] }} />
