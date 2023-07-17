@@ -52,7 +52,7 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordState, setPasswordState] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [registerError, setRegisterError] = useState('');
+  const [registerError] = useState('');
   const [googleLogin, setGoogleLogin] = useState({ uid: '', email: '' });
   const navigate = useNavigate();
 

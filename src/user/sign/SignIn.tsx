@@ -3,7 +3,6 @@ import { green } from '@mui/material/colors';
 import React, { useState } from 'react'
 import { browserLocalPersistence, browserSessionPersistence, getAuth, GoogleAuthProvider, setPersistence, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { FirebaseError } from 'firebase/app';
-import useUserStore from '../../store/UserStore';
 
 const theme = createTheme({
   components: {
@@ -92,7 +91,6 @@ const SignIn = () => {
             </Box>
           </Grid>
         </Grid>
-        {/* oauth 자리 */}
       </Container>
     </ThemeProvider>
   )

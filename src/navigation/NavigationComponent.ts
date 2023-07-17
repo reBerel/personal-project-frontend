@@ -1,4 +1,4 @@
-import { InputBase, alpha, createTheme, makeStyles, styled } from "@mui/material";
+import { InputBase, alpha, createTheme, styled } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
 export const Search = styled('div')(({ theme }) => ({
