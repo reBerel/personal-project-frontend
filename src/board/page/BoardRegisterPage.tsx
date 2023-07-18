@@ -73,7 +73,7 @@ const BoardRegisterPage = () => {
       title: title.value,
       writer: writer.value,
       content: content.value,
-      category: category,
+      category: Number(category)
     }
     await mutation.mutateAsync(data)
   }
