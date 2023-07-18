@@ -7,7 +7,8 @@ export interface Board {
     modifyDate: string;
     likeCount: number;
     readCount: number;
-    replyCount: number;
+    replyCount: number;    
+    category: number;
 }
 export interface ModifyBoard{
     boardId: string | undefined;

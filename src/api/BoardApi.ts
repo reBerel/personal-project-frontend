@@ -19,7 +19,7 @@ export const fetchBoardList = async (): Promise<Board[]> => {
 }
 
 export const registerBoard =  async (
-    data: {title: string, writer: string, content: string}
+    data: {title: string, writer: string, content: string, category: number}
     ): Promise<Board> => {
         const response = await springAxiosInst.post<Board>('/board/register', data)
         return response.data
