@@ -1,9 +1,10 @@
 import { Box, Button, Container, Grid, TextField, ThemeProvider, createTheme } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { green } from '@mui/material/colors';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
 import { deleteBoard, useBoardQuery, useBoardUpdateMutation } from '../../api/BoardApi';
+import useUserStore from '../../store/UserStore';
 
 interface RouteParams {
   boardId: string
@@ -19,6 +20,27 @@ const theme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiInputBase-root': {
+            padding: 0, 
+          },
+          input: {
+            padding: '0.5rem'
+          },
+          '& .MuiInputLabel-root': {
+            fontSize: '14px',
+            display: 'block',
+            marginTop: '-0.3rem'
+          },
+          '& .MuiInputBase-input': {
+            fontSize: '16px',
+          },
+          marginTop: '12px'
+        },
+      },
+    },
   },
   palette: {
     primary: {
@@ -28,12 +50,12 @@ const theme = createTheme({
 });
 
 const BoardModifyPage = () => {
-
+  const user = useUserStore((state)=> state.user)
   const navigate = useNavigate()
   const { boardId } = useParams<RouteParams>()
   const queryClient = useQueryClient()
 
-  const { data: board } = useBoardQuery(boardId || '')
+  const { data: board, isLoading } = useBoardQuery(boardId || '')
   const mutation = useBoardUpdateMutation()
 
   const [title, setTitle] = useState(board?.title || '')
@@ -63,6 +85,7 @@ const BoardModifyPage = () => {
 
     if (resuit === true) {
       alert("삭제")
+      navigate("/key-we-board-page/list")
     } else {
       alert('취소')
     }
@@ -71,11 +94,17 @@ const BoardModifyPage = () => {
   const handleCancelClick = () => {
     navigate(`/key-we-board-page/read/${boardId}`)
   }
+  useEffect(()=> {
+    if (!isLoading && board) {
+      setTitle(board.title);
+      setContent(board.content);
+    }
+  }, [isLoading, board])
 
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
-        <TextField disabled label="작성자" name="writer" sx={{ borderRadius: '4px' }} />
+        <TextField disabled name="writer" value={user.nickName} sx={{ borderRadius: '4px' }}/>
         <Box display='contents'> </Box>
         <Box display="flex" flexDirection="column" >
           <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} onChange={(e) => setTitle(e.target.value)} />

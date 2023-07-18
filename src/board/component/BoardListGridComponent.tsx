@@ -3,13 +3,19 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import BoardPageComponent from '../component/BoardPageComponent'
 import BoardSearchComponent from '../component/BoardSearchComponent'
+import useUserStore from '../../store/UserStore'
 
 
 const BoardListGridComponent = () => {
   const navigate = useNavigate()
+  const user = useUserStore((state) => state.user);
 
   const handleRegisterClick = () => {
-    navigate('/key-we-board-page/register');
+    if (user.uid) {
+      navigate('/key-we-board-page/register');
+    }else{
+      alert("로그인 후 이용해 주시길 바랍니다")
+    }
   };
   return (
     <Container>

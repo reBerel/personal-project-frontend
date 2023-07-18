@@ -20,7 +20,7 @@ export default function SimpleBottomNavigation() {
   
       switch (category) {
         case 0:
-          path = '/main';
+          path = '/';
           break;
         case 1:
           path = '/spring';
