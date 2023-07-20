@@ -19,16 +19,26 @@ export const fetchBoardList = async (): Promise<Board[]> => {
 }
 
 export const registerBoard =  async (
-    data: {title: string, writer: string, content: string, category: number}
+    data: {title: string, writer: string, content: string}
     ): Promise<Board> => {
         const response = await springAxiosInst.post<Board>('/board/register', data)
         return response.data
 }
 
 export const fetchBoard = async (boardId: string): Promise<Board | null> => {
-    const response = await springAxiosInst.get<Board>(`/board/${boardId}`)
-    return response.data
+    const response = await springAxiosInst.get<Board>(`/board/${boardId}`)    
+    return response.data    
 }
+
+export const incrementReadCount = async (boardId: string): Promise<void> => {
+    try {
+      await springAxiosInst.get(`/board/read-count/${boardId}`);
+      console.log("API 요청 성공");
+    } catch (error) {
+        console.error('API 요청 실패:', error);
+    }
+  };
+  
 
 export const useBoardQuery = (boardId: string): UseQueryResult<Board | null, unknown> => {
     return useQuery(['board', boardId], () => fetchBoard(boardId))

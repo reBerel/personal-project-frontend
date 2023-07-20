@@ -8,7 +8,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { green } from '@mui/material/colors';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchBoard, useBoardQuery } from '../../api/BoardApi';
+import { fetchBoard, incrementReadCount, useBoardQuery } from '../../api/BoardApi';
 import useUserStore from '../../store/UserStore';
 
 const theme = createTheme({
@@ -29,8 +29,9 @@ const theme = createTheme({
 });
 
 const BoardReadPage = () => {
-  const { boardId } = useParams()
+  const { boardId } = useParams()  
   const { data: board } = useBoardQuery(boardId || '')
+  const [readCount, setReadCount] = useState(board?.readCount || 0);
   const [isBookmarkChecked, setBookmarkChecked] = useState(false);
   const user = useUserStore((state) => state.user)
   const navigate = useNavigate()
@@ -39,7 +40,7 @@ const BoardReadPage = () => {
       setBookmarkChecked((prev: any) => !prev);      
     }else{
       alert("로그인 후 이용가능합니다.")
-    }    
+    }
   }
   const handleModifyClick = ()=> {
     if (user.uid) {
@@ -47,15 +48,24 @@ const BoardReadPage = () => {
     }else
     alert("수정권한이 없는 게시물입니다.")
   }
-
   useEffect(() => {
     const fetchBoardData = async () => {
-      const data = await fetchBoard(boardId || '');
-      console.log(data);
+      await fetchBoard(boardId || '');
     };
     fetchBoardData();
-  }, [boardId]
-  )
+  }, [boardId]);
+
+  const handleReadCount = async (boardId: string) => {
+    await incrementReadCount(boardId);
+    setReadCount((prevReadCount) => prevReadCount + 1)
+    console.log("prevReadCount()");  
+  }      
+  useEffect(() => {
+    if (boardId) {
+      handleReadCount(boardId);
+    }
+  },[boardId])      
+    
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
@@ -70,13 +80,13 @@ const BoardReadPage = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align='left' style={{ width: '14%' }}>작성자:{board?.writer} </TableCell>
-                <TableCell style={{ width: '43%' }}></TableCell>
-                <TableCell align='center'>작성일 {board?.createDate} </TableCell>
-                <TableCell align='left' style={{ width: '10%' }}>추천 {board?.likeCount ? board.likeCount : 0} </TableCell>
-                <TableCell align='left' style={{ width: '8%' }}>
-                  <RemoveRedEyeIcon fontSize='small' />
-                  {board?.readCount ? board.readCount : 0}
+                <TableCell align='left' sx={{ width: '2Z%' }}>작성자:{board?.writer} </TableCell>
+                <TableCell sx={{ width: '30%' }}></TableCell>
+                <TableCell align='center'sx={{ width: '28%' }}>작성일 {board?.createDate} </TableCell>
+                <TableCell align='left' sx={{ width: '10%' }}>추천 {board?.likeCount ? board.likeCount : 0} </TableCell>
+                <TableCell align='left' sx={{ width: '8%' }}>
+                  <RemoveRedEyeIcon fontSize='small'/>
+                  {board?.readCount}
                 </TableCell>
               </TableRow>
             </TableHead>
