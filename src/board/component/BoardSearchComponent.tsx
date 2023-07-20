@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import useBoardStore from '../../store/BoardStore';
-import useUserStore from '../../store/UserStore';
+import { searchBoard } from '../../api/BoardApi';
 
 
 const gridStyle: React.CSSProperties = {
@@ -14,31 +14,21 @@ const gridStyle: React.CSSProperties = {
 
 export default function BoardSearchComponent() {
   const [category, setCategory] = React.useState('');
-  const title = useBoardStore((state) => state.boards)
-  const createDate = useBoardStore((state) => state.boards)
-  const modifyDate = useBoardStore((state) => state.boards)
-  const nickName = useUserStore((state) => state.user)
+  const setBoards = useBoardStore((state) => state.setBoards)
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
   };
 
-  const searchHandle = () => {
-    // if (search === 10) {
-    //   return title
-    // }
-    // if (search === 20) {
-    //   return nickName
-    // }
-    //   if (search === 30) {
-    //     if (modifyDate) {
-    //       return "modifyDate";
-    //     } else {
-    //       return "createDate";
-    //     }
-    //   }
-    // return null;
-  }
-
+  const searchHandle = React.useCallback(async (event: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      const data = await searchBoard('');
+      console.log(data); // 확인용 로그
+      setBoards(data);
+    } catch (error) {
+      console.error('Failed to search board:', error);
+    }
+  }, [setBoards]);
+  
   return (
     <Container sx={{ marginLeft: '3.5rem' }}>
       <Grid container spacing={2} alignItems="left">

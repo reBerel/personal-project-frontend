@@ -64,3 +64,13 @@ export const useBoardUpdateMutation = (): UseMutationResult<ModifyBoard, unknown
 export const deleteBoard = async(boardId: string): Promise<void> => {
     await springAxiosInst.delete(`/board/${boardId}`)
 }
+
+export const searchBoard = async (keyword: string): Promise<Board[]> => {
+    try {
+      const response = await springAxiosInst.get<Board[]>(`/board/search?boardId=${keyword}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to search board:', error);
+      throw error;
+    }
+  };
