@@ -1,9 +1,8 @@
 import { Box, Button, Container, TextField, ThemeProvider, createTheme } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { registerBoard } from '../../api/BoardApi'
-import BoardRegisterCategoryComponent from '../component/BoardRegisterCategoryComponent'
 import { green } from '@mui/material/colors'
 import useUserStore from '../../store/UserStore'
 
@@ -49,7 +48,6 @@ const BoardRegisterPage = () => {
   const user = useUserStore((state)=> state.user) 
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const [category, setCategory] = useState('');
   const mutation = useMutation(registerBoard, {
     onSuccess: (data) => {
       queryClient.setQueryData('board', data)
@@ -73,7 +71,6 @@ const BoardRegisterPage = () => {
       title: title.value,
       writer: writer.value,
       content: content.value,
-      category: Number(category)
     }
     await mutation.mutateAsync(data)
   }
@@ -85,9 +82,8 @@ const BoardRegisterPage = () => {
         <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: '1rem' }}>
           <TextField value={user.nickName} name="writer" sx={{ width: '50%', borderRadius: '4px', top: '1rem', marginBottom: '10px'}}/>
           <Box sx={{ width: "50%" }}/>
-          <BoardRegisterCategoryComponent category={category} onChange={setCategory}/>
+          {/* <BoardRegisterCategoryComponent/> */}
           </Box>
-          {/* writer -> User.nickName */}
           <Box display='contents'>
         </Box>
           <Box display="flex" flexDirection="column" >

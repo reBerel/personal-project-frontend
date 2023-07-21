@@ -5,16 +5,20 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-interface BoardRegisterCategoryComponentProps {
-  category: string; // category 값을 받아올 prop 추가
-  onChange: (value: string) => void; // category 변경 시 호출될 콜백 함수 prop 추가
-}
+// interface BoardRegisterCategoryComponentProps {
+//   category: string; // category 값을 받아올 prop 추가
+//   onChange: (value: string) => void; // category 변경 시 호출될 콜백 함수 prop 추가
+// }
 
-const BoardRegisterCategoryComponent = ({ category, onChange }: BoardRegisterCategoryComponentProps) => {
+// const BoardRegisterCategoryComponent = ({ category, onChange }: BoardRegisterCategoryComponentProps) => {
+//   const handleChange = (event: SelectChangeEvent) => {
+//     onChange(event.target.value); // onChange 콜백 함수 호출하여 category 값 업데이트
+//   };
+const BoardRegisterCategoryComponent = () =>{
+  const [category, setCategory] = React.useState('');  
   const handleChange = (event: SelectChangeEvent) => {
-    onChange(event.target.value); // onChange 콜백 함수 호출하여 category 값 업데이트
-  };
-
+  setCategory(event.target.value);
+  }    
   return (
     <Container sx={{ top: '1.3rem' }}>
       <FormControl variant="standard" sx={{ minWidth: 100 }}>
