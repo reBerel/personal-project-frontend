@@ -74,7 +74,7 @@ const SignIn = () => {
         <Typography component="h1" variant="h5" sx={{ marginBottom: 1 }}> 로그인 </Typography>
         <Box display="flex" flexDirection="column" >
           <TextField autoFocus id='email' name='email' label="아이디" sx={{ p: 0.8 }} value={inputEmail} onChange={handleInputEmail} />
-          <TextField id='password' name='password' label="비밀번호" sx={{ p: 0.8 }} value={inputPassword} onChange={handleInputPassword} />
+          <TextField type="password" id='password' name='password' label="비밀번호" sx={{ p: 0.8 }} value={inputPassword} onChange={handleInputPassword} />
           <div>
             <input type="checkbox" onChange={(e) => { setIsAuto(e.currentTarget.checked); console.log(e.currentTarget.checked); }} /><span>자동로그인</span>
           </div>
