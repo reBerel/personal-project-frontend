@@ -5,3 +5,7 @@ export const loginUser = async(uid: string): Promise<User> => {
   const result = await springAxiosInst.get<User>(`/user/login/${uid}`)
   return result.data;
 }
+export const bookmarkChecking = async (uid: string): Promise<User> => {
+  const result = await springAxiosInst.get<User>(`/user/bookmark/${uid}`)
+  return result.data;
+}
