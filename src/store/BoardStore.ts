@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { Board } from "../entity/Board"
+import { Board } from "../board/entity/Board"
 
 interface BoardState {
     boards: Board[]

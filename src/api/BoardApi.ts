@@ -1,5 +1,5 @@
 import { UseMutationResult, UseQueryResult, useMutation, useQuery, useQueryClient } from "react-query";
-import { Board, ModifyBoard } from "../entity/Board";
+import { Board, ModifyBoard } from "../board/entity/Board";
 import useBoardStore from "../store/BoardStore";
 import springAxiosInst from "../utility/axiosInstance";
 

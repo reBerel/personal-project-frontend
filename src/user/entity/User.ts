@@ -1,4 +1,4 @@
-import { Board } from "../../entity/Board";
+import { Board } from "../../board/entity/Board";
 
 export interface User {
     userId: number;
