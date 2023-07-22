@@ -16,7 +16,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputBase-root': {
-            padding: '5px 12px', // 입력 필드의 내부 여백 설정
+            padding: '5px 12px',
           },
         },
       },
