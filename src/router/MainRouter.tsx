@@ -11,7 +11,7 @@ import UserInformation from '../user/page/UserInformation'
 import UserWriting from '../user/page/UserWriting'
 import UserBookmark from '../user/page/UserBookmark'
 import useUserStore from '../store/UserStore'
-
+import UserDelete from '../user/page/UserDelete'
 const MainRouter = () => {
   const user = useUserStore((state)=> state.user)
   return (
@@ -29,6 +29,7 @@ const MainRouter = () => {
           <Route path={`/key-we-board-page/info/${user.uid}`} element={<UserInformation/>} />
           <Route path={`/key-we-board-page/writing/${user.uid}`} element={<UserWriting/>} />
           <Route path={`/key-we-board-page/bookmark/${user.uid}`} element={<UserBookmark/>} />
+          <Route path={`/key-we-board-page/profile/delete/${user.uid}`} element={<UserDelete/>} />
         </Routes>
       </Suspense>
     </div>

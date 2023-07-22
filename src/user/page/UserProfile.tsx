@@ -1,4 +1,4 @@
-import { Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme } from '@mui/material'
+import { Button, Container, Paper, Table, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme } from '@mui/material'
 import React from 'react'
 import useUserStore from '../../store/UserStore'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
@@ -31,6 +31,7 @@ const UserProfile = () => {
   const deleteHandleprofile = async() => {
     const resuit = window.confirm('정말로 탈퇴 하시겠습니까?')
     if (resuit === true) {
+      alert("회원탈퇴 페이지로 이동합니다.")
       navigate(`/key-we-board-page/profile/delete/${user.uid}`)            
     } else {
       alert("취소 되었습니다.")

@@ -9,3 +9,6 @@ export const bookmarkChecking = async (uid: string): Promise<User> => {
   const result = await springAxiosInst.get<User>(`/user/bookmark/${uid}`)
   return result.data;
 }
+export const userDeleteHandler = async(userId: string): Promise<void> => {
+  await springAxiosInst.delete(`/user/${userId}`)
+}
