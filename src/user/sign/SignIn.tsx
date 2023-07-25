@@ -83,7 +83,7 @@ const SignIn = () => {
         </Box >
         <Grid container>
           <Grid item xs marginTop='10px'>
-            <Link href="/key-we-board-page/sign-up" underline="none" fontSize="13px">비밀번호 찾기</Link>
+            <Link href="/key-we-board-page/sign-up" underline="none" fontSize="13px">아이디/비밀번호 찾기</Link>
           </Grid>
           <Grid item>
             <Box marginTop="10px">

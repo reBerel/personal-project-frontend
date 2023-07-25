@@ -25,7 +25,7 @@ const App: React.FC = () => {
             navigate('/key-we-board-page/list');
           }
         } else {
-          alert('회원가입해야함');
+          // alert('회원가입해야함');
           navigate('/key-we-board-page/sign-up');
         }
       } else {
