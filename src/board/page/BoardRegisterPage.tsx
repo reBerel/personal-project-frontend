@@ -1,10 +1,14 @@
-import { Box, Button, Container, TextField, ThemeProvider, createTheme } from '@mui/material'
-import React from 'react'
-import { useMutation, useQueryClient } from 'react-query'
-import { useNavigate } from 'react-router-dom'
-import { registerBoard } from '../../api/BoardApi'
-import { green } from '@mui/material/colors'
-import useUserStore from '../../store/UserStore'
+import React from 'react';
+import { Container, Box, Button, TextField, ThemeProvider, createTheme } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { useMutation, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { registerBoard } from '../../api/BoardApi';
+import { green } from '@mui/material/colors';
+import useUserStore from '../../store/UserStore';
 
 const theme = createTheme({
   components: {
@@ -43,7 +47,6 @@ const theme = createTheme({
   },
 });
 
-
 const BoardRegisterPage = () => {
   const user = useUserStore((state)=> state.user) 
   const navigate = useNavigate()
@@ -55,8 +58,13 @@ const BoardRegisterPage = () => {
     }
   })
 
+  const [category, setCategory] = React.useState('');
+  const handleChange = (event: SelectChangeEvent) => {
+    setCategory(event.target.value);
+  }
+
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const target = event?.target as typeof event.target & {
       elements: {
@@ -71,6 +79,7 @@ const BoardRegisterPage = () => {
       title: title.value,
       writer: writer.value,
       content: content.value,
+      category: category,
     }
     await mutation.mutateAsync(data)
   }
@@ -79,17 +88,25 @@ const BoardRegisterPage = () => {
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
         <form onSubmit={handleSubmit}>
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: '1rem' }}>
-          <TextField value={user.nickName} name="writer" sx={{ width: '50%', borderRadius: '4px', top: '1rem', marginBottom: '10px'}}/>
-          <Box sx={{ width: "50%" }}/>
-          {/* <BoardRegisterCategoryComponent/> */}
+          <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: '1rem' }}>
+            <TextField value={user.nickName} name="writer" sx={{ width: '50%', borderRadius: '4px', top: '1rem', marginBottom: '10px'}}/>
+            <Box sx={{ width: "50%" }}/>
+            <FormControl variant="standard" sx={{ minWidth: 100 }}>
+              <InputLabel id="category">카테고리</InputLabel>
+              <Select labelId="category" id="demo-simple-select-standard" value={category} onChange={handleChange} label="category">
+                <MenuItem value="Main">Main</MenuItem>
+                <MenuItem value="Spring">Spring</MenuItem>
+                <MenuItem value="Python">Python</MenuItem>
+                <MenuItem value="Vue">Vue</MenuItem>
+                <MenuItem value="React">React</MenuItem>
+                <MenuItem value="Question">Question</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
-          <Box display='contents'>
-        </Box>
-          <Box display="flex" flexDirection="column" >
+          <Box display='contents'></Box>
+          <Box display="flex" flexDirection="column">
             <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} />
-            <TextField label="내용" name="content" multiline
-              minRows={20} maxRows={20} sx={{ borderRadius: '4px', marginTop: '10px' }} />
+            <TextField label="내용" name="content" multiline minRows={20} maxRows={20} sx={{ borderRadius: '4px', marginTop: '10px' }} />
           </Box>
           <Button type="submit">작성 완료</Button>
         </form>
@@ -98,4 +115,4 @@ const BoardRegisterPage = () => {
   )
 }
 
-export default BoardRegisterPage
+export default BoardRegisterPage;
