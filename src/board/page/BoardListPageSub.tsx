@@ -58,17 +58,20 @@ const BoardListPage = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="md" style={{ marginTop: '1.5rem', minHeight: '100%', position: 'relative' }}>
-        <BoardCategoryComponent />
+      <Container maxWidth="md" style={{ marginTop: '3rem', minHeight: '100%', position: 'relative' }}>
+        <BoardCategoryComponent onChangeCategory={function (category: string): void {
+          throw new Error('Function not implemented.')
+        } } />
         <TableContainer component={Paper}>
           <Table aria-label='board table'>
             <TableHead>
               <TableRow >
                 <TableCell align='center' style={{ width: '7%' }}>No.</TableCell>
-                <TableCell align='center' style={{ width: '50%' }}>제목</TableCell>
+                <TableCell align='center' style={{ width: '8%' }}>분류</TableCell>
+                <TableCell align='center' style={{ width: '45%' }}>제목</TableCell>
                 <TableCell align='center' style={{ width: '10%' }}>작성자</TableCell>
-                <TableCell align='center' style={{ width: '15%' }}>작성일</TableCell>
-                <TableCell align='center' style={{ width: '7%' }}>추천</TableCell>
+                <TableCell align='center' style={{ width: '20%' }}>작성일</TableCell>
+                <TableCell align='center' style={{ width: '7%',fontSize: '13px' }}>추천</TableCell>
                 <TableCell align='center' style={{ width: '3%' }}>
                   <RemoveRedEyeIcon fontSize='small' />
                 </TableCell>
@@ -82,12 +85,13 @@ const BoardListPage = () => {
               ) : (
                 boards?.map((board) => (
                   <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{ cursor: 'pointer' }}>
-                    <TableCell align='center'>{board.boardId}</TableCell>
-                    <TableCell align='center'>{board.title} [{board.replyCount ? board.replyCount : '-'}]</TableCell>
-                    <TableCell align='center'>{board.writer}</TableCell>
-                    <TableCell align='center'>{board.createDate}</TableCell>
-                    <TableCell align='center'>{board.likeCount ? board.likeCount : '-'}</TableCell>
-                    <TableCell align='center'>{board.readCount ? board.readCount : '-'}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardId}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardCategory}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.title} [{board.replyCount ? board.replyCount : '-'}]</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.writer}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.createDate}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.likeCount ? board.likeCount : '-'}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.readCount ? board.readCount : '-'}</TableCell>
                   </TableRow>
                 )))}
             </TableBody>
