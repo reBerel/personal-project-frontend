@@ -1,19 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-// interface BoardRegisterCategoryComponentProps {
-//   category: string; // category 값을 받아올 prop 추가
-//   onChange: (value: string) => void; // category 변경 시 호출될 콜백 함수 prop 추가
-// }
-
-// const BoardRegisterCategoryComponent = ({ category, onChange }: BoardRegisterCategoryComponentProps) => {
-//   const handleChange = (event: SelectChangeEvent) => {
-//     onChange(event.target.value); // onChange 콜백 함수 호출하여 category 값 업데이트
-//   };
 const BoardRegisterCategoryComponent = () =>{
   const [category, setCategory] = React.useState('');  
   const handleChange = (event: SelectChangeEvent) => {
@@ -24,12 +15,12 @@ const BoardRegisterCategoryComponent = () =>{
       <FormControl variant="standard" sx={{ minWidth: 100 }}>
         <InputLabel id="category">카테고리</InputLabel>
         <Select labelId="category" id="demo-simple-select-standard" value={category} onChange={handleChange} label="category">
-          <MenuItem value={10}>Main</MenuItem>
-          <MenuItem value={20}>Spring</MenuItem>
-          <MenuItem value={30}>Python</MenuItem>
-          <MenuItem value={40}>Vue</MenuItem>
-          <MenuItem value={50}>React</MenuItem>
-          <MenuItem value={60}>Question</MenuItem>
+          <MenuItem value={1}>Main</MenuItem>
+          <MenuItem value={2}>Spring</MenuItem>
+          <MenuItem value={3}>Python</MenuItem>
+          <MenuItem value={4}>Vue</MenuItem>
+          <MenuItem value={5}>React</MenuItem>
+          <MenuItem value={6}>Question</MenuItem>
         </Select>
       </FormControl>
     </Container>

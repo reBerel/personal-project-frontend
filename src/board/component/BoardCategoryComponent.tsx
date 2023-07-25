@@ -3,58 +3,31 @@ import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { Paper } from '@mui/material';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
+interface BoardCategoryComponentProps {
+  onChangeCategory: (category: string) => void;
+}
+const BoardCategoryComponent: React.FC<BoardCategoryComponentProps> = ({ onChangeCategory }) => {
+  const [value, setValue] = React.useState('Main');
 
-export default function SimpleBottomNavigation() {
-  const [value, setValue] = React.useState(0);
-    const navigate = useNavigate();
-  
-    const handleChange = (event: any, newValue: any) => {
-      setValue(newValue);
-      navigateToCategory(newValue);
-    };
-  
-    const navigateToCategory = (category: any) => {
-      let path = '';
-  
-      switch (category) {
-        case 0:
-          path = '/';
-          break;
-        case 1:
-          path = '/spring';
-          break;
-        case 2:
-          path = '/python';
-          break;
-        case 3:
-          path = '/vue';
-          break;
-        case 4:
-          path = '/react';
-          break;
-        case 5:
-          path = '/question';
-          break;
-        default:
-          break;
-      }
-  
-      navigate(path);
-    };
-  
-    return (
-      <Box>
-        <BottomNavigation showLabels value={value} onChange={handleChange} sx={{ height: '2.5rem', marginBottom: '5px' }} component={Paper}>
-          <BottomNavigationAction label="Main" />
-          <BottomNavigationAction label="Spring" />
-          <BottomNavigationAction label="Python" />
-          <BottomNavigationAction label="Vue" />
-          <BottomNavigationAction label="React" />
-          <BottomNavigationAction label="Question" />
-        </BottomNavigation>
-      </Box>
-    );
-  }
-  
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+    setValue(newValue);
+    onChangeCategory(newValue); // 선택한 카테고리를 전달하기 위해 프롭스 함수를 호출합니다.
+  };
+
+  return (
+    <Box>
+      <BottomNavigation showLabels value={value} onChange={handleChange} sx={{ height: '2.5rem', marginBottom: '5px' }} component={Paper}>
+        <BottomNavigationAction value="Main" label="Main" />
+        <BottomNavigationAction value="Spring" label="Spring" />
+        <BottomNavigationAction value="Python" label="Python" />
+        <BottomNavigationAction value="Vue" label="Vue" />
+        <BottomNavigationAction value="React" label="React" />
+        <BottomNavigationAction value="Question" label="Question" />
+      </BottomNavigation>
+    </Box>
+  );
+};
+
+export default BoardCategoryComponent;
