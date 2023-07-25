@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../store/UserStore';
 import { userDeleteHandler } from '../../api/UserApi';
 
-const UserInformation = () => {
+const UserDelete = () => {
   const [checked, setChecked] = useState(false);
   const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
@@ -29,9 +29,8 @@ const UserInformation = () => {
           deleteUser(authUser),
           userDeleteHandler(user.uid)
         ]);
-        
         alert('회원 탈퇴가 완료되었습니다.');
-        navigate('/');
+        navigate('/key-we-board-page/list');
       }
     } catch (error) {
       alert('회원 탈퇴 중에 오류가 발생했습니다.' + error);
@@ -59,4 +58,4 @@ const UserInformation = () => {
   );
 };
 
-export default UserInformation;
+export default UserDelete;
