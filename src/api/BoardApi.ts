@@ -1,5 +1,5 @@
 import { UseMutationResult, UseQueryResult, useMutation, useQuery, useQueryClient } from "react-query";
-import { Board, ModifyBoard } from "../board/entity/Board";
+import { Board, BoardResponse, ModifyBoard } from "../board/entity/Board";
 import useBoardStore from "../store/BoardStore";
 import springAxiosInst from "../utility/axiosInstance";
 
@@ -19,7 +19,7 @@ export const fetchBoardList = async (): Promise<Board[]> => {
 }
 
 export const registerBoard =  async (
-    data: {title: string, writer: string, content: string}
+    data: {title: string, writer: string, content: string, category: string}
     ): Promise<Board> => {
         const response = await springAxiosInst.post<Board>('/board/register', data)
         return response.data
@@ -27,7 +27,8 @@ export const registerBoard =  async (
 
 export const fetchBoard = async (boardId: string): Promise<Board | null> => {
     const response = await springAxiosInst.get<Board>(`/board/${boardId}`)    
-    return response.data    
+    console.log(response.data)
+    return response.data
 }
 
 export const incrementReadCount = async (boardId: string): Promise<void> => {
@@ -45,10 +46,10 @@ export const useBoardQuery = (boardId: string): UseQueryResult<Board | null, unk
 }
 
 export const updateBoard = async(updatedData: ModifyBoard): Promise<ModifyBoard> => {
-    const { boardId, title,  writer, content } = updatedData
+    const { boardId, title,  writer, content, boardCategory } = updatedData
 
     const response = await springAxiosInst.put<ModifyBoard>(
-        `/board/${boardId}`, {title, content,writer})
+        `/board/${boardId}`, {title, content, writer, boardCategory})
 
         return response.data
 }
@@ -73,4 +74,13 @@ export const searchBoard = async (keyword: string): Promise<Board[]> => {
       console.error('Failed to search board:', error);
       throw error;
     }
+  };
+  export const fetchBoardListPage = async (pageNumber: number, pageSize: number): Promise<BoardResponse> => {
+    try {
+      const response = await springAxiosInst.get<BoardResponse>(`/board/list-page?page=${pageNumber}&size=${pageSize}`);
+      return response.data;
+    } catch (error) {
+      console.error('Failed to fetch board list page:', error);
+      throw error;
+    }  
   };
