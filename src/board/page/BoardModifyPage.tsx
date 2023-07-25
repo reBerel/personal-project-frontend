@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField, ThemeProvider, createTheme } from '@mui/material'
+import { Box, Button, Container, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, ThemeProvider, createTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { green } from '@mui/material/colors';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -60,17 +60,25 @@ const BoardModifyPage = () => {
 
   const [title, setTitle] = useState(board?.title || '')
   const [content, setContent] = useState(board?.content || '')
+  const [boardCategory, setBoardCategory] = useState(board?.content || '')
+
+  const [category, setCategory] = React.useState('');
+  const handleChange = (event: SelectChangeEvent) => {
+    setCategory(event.target.value);
+  }
 
   const handleEditFinishClick = async () => {
     const { writer } = board || {writer: ""};
     console.log('수정 완료?');
+    
 
-    if (title && content && writer) {
+    if (title && content && writer && boardCategory) {
       const updateData = {
         boardId,
         title,
         content,
         writer,
+        boardCategory,
       };
       
       await mutation.mutateAsync(updateData);
@@ -98,13 +106,28 @@ const BoardModifyPage = () => {
     if (!isLoading && board) {
       setTitle(board.title);
       setContent(board.content);
+      setBoardCategory(board.boardCategory);
     }
   }, [isLoading, board])
 
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
+        <Box display="flex"alignItems="center" justifyContent="space-between" sx={{ mb: '1rem' }}>
         <TextField disabled name="writer" value={user.nickName} sx={{ borderRadius: '4px' }}/>
+        <Box sx={{ width: "50%" }}/>
+            <FormControl variant="standard" sx={{ minWidth: 100 }}>              
+              <InputLabel id="category">카테고리</InputLabel>
+              <Select labelId="category" id="demo-simple-select-standard" value={category} onChange={handleChange} label="category">
+                <MenuItem value="Main">Main</MenuItem>
+                <MenuItem value="Spring">Spring</MenuItem>
+                <MenuItem value="Python">Python</MenuItem>
+                <MenuItem value="Vue">Vue</MenuItem>
+                <MenuItem value="React">React</MenuItem>
+                <MenuItem value="Question">Question</MenuItem>
+              </Select>
+            </FormControl>
+            </Box>
         <Box display='contents'> </Box>
         <Box display="flex" flexDirection="column" >
           <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} onChange={(e) => setTitle(e.target.value)} />
