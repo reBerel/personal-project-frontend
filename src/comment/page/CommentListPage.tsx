@@ -1,10 +1,19 @@
-import { CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
+import { Button, CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
 import { green } from '@mui/material/colors';
 import React, { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
+import { useNavigate, useParams } from 'react-router-dom';
+import { deleteComment, fetchCommentList, updateComment, useCommentQueryList } from '../../api/CommentApi';
+import useUserStore from '../../store/UserStore';
+import PersonIcon from '@mui/icons-material/Person';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { useQueryClient } from 'react-query';
 import useCommentStore from '../../store/CommentStore';
-import { useNavigate } from 'react-router-dom';
-import { fetchCommentList, useCommentQueryList } from '../../api/CommentApi';
+
+interface RouteParams {
+  commentId: string
+  [key: string]: string
+}
 
 const theme = createTheme({
   components: {
@@ -12,7 +21,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputBase-root': {
-            padding: '5px 12px',
+            padding: '2px 6px',
           },
         },
       },
@@ -20,7 +29,7 @@ const theme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: {
-          padding: '10px 15px'
+          padding: '5px 10px'
         },
       },
     },
@@ -35,7 +44,31 @@ const theme = createTheme({
 const CommentListPage = () => {
   const { data: comments, isLoading, isError } = useCommentQueryList()
   const setComments = useCommentStore((state) => state.setComments)
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const user = useUserStore((state)=> state.user)
+  const { commentId } = useParams<RouteParams>()
+  const comment = useCommentStore((state) => state.comment)
+
+  
+  const handleEditClick = () => {    
+  };
+
+  const handleDeleteClick = async () => {
+    await deleteComment(commentId || ''); // 문자열로 전달
+    queryClient.invalidateQueries('boardList');
+    const result = window.confirm('정말로 삭제 하시겠습니까?');
+    if (comment.writer === user.nickName) {
+      if (result === true) {
+        alert("삭제");
+        navigate("/");
+      } else {
+        alert('취소');
+      }
+  }
+}
+  
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchCommentList()
@@ -52,40 +85,46 @@ const CommentListPage = () => {
     return <Typography>댓글을 갖고오는 중 에러 발생!</Typography>
   }
 
-  const ReadClick = (boardId: number) => {
-    navigate(`/key-we-board-page/read/${boardId}`)
-  }
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="md" style={{ marginTop: '3rem' }}>
+      <Container maxWidth='md' sx={{mt: '3px'}}>
         <TableContainer component={Paper}>
           <Table aria-label='board table'>
             <TableHead>
-              <TableRow>
-                <TableCell align='center' style={{ width: '7%' }}>No.</TableCell>
-                <TableCell align='center' style={{ width: '45%' }}>제목</TableCell>
-                <TableCell align='center' style={{ width: '10%' }}>작성자</TableCell>
-                <TableCell align='center' style={{ width: '20%' }}>작성일</TableCell>
-                <TableCell align='center' style={{ width: '7%' }}>추천</TableCell>
-                <TableCell align='center' style={{ width: '3%' }}>
-                </TableCell>
+              <TableRow>                
+                <TableCell align='center' style={{ width: '50%' }}/>
+                <TableCell align='center' style={{ width: '20%' }}/>
+                <TableCell align='center' style={{ width: '20%' }}/>                
               </TableRow>
             </TableHead>
             <TableBody>
-              {comments && comments.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} align='center'>현재 등록된 게시물이 없습니다.</TableCell>
-                </TableRow>
-              ) : (
-                comments?.map((comment: any) => (
-                  <TableRow key={comment.commentId} style={{ cursor: 'pointer' }}>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{comment.boardId}</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{comment.writer}</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{comment.content}</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '12px' }}>{comment.createDate}</TableCell>
-                  </TableRow>
-                )))}
-            </TableBody>
+  {comments && comments.length === 0 ? (
+    <TableRow>
+      <TableCell colSpan={5} align='center'>현재 작성된 댓글이 없습니다.</TableCell>
+    </TableRow>
+  ) : (
+    comments?.map((comment: any) => (
+      <React.Fragment key={comment.commentId}>
+        {/* 첫 번째 행 - writer와 createDate 표시 */}
+        <TableRow style={{ cursor: 'pointer' }}>
+          <TableCell align='left' sx={{ fontSize: '14px' }}>{comment.writer} <PersonIcon fontSize='inherit'/> </TableCell>
+          <TableCell/>
+          <TableCell align='right' sx={{ fontSize: '14px' }}>{comment.createDate} <AccessTimeIcon fontSize='inherit'/></TableCell>
+        </TableRow>
+        {/* 두 번째 행 - content 표시 */}
+        <TableRow style={{ cursor: 'pointer' }}>
+          <TableCell align='left' sx={{ fontSize: '14px' }}>{comment.content} </TableCell>
+          <TableCell/>
+          <TableCell align='right'>
+            <Button onClick={handleEditClick} sx={{fontSize: '11.5px'}} >수정</Button>
+            <Button onClick={handleDeleteClick} color='error' sx={{fontSize: '11.5px'}} >삭제</Button> 
+            </TableCell>
+        </TableRow>
+      </React.Fragment>
+    ))
+  )}
+</TableBody>
+
           </Table>
         </TableContainer>
       </Container>
