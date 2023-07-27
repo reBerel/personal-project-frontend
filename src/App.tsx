@@ -35,12 +35,13 @@ const App: React.FC = () => {
   }, []);
 
   return (
-
     <div>
+      <div style={{position: 'relative'}}>      
+      <NavigationBar />
+      </div>
+    
       <div style={{ position: 'relative', minHeight: 100 }}>
-        <NavigationBar />
         <MainRouter />
-
       </div>
       <div>
         <NavigatonBottomBar />

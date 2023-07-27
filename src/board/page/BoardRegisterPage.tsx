@@ -9,6 +9,51 @@ import { useNavigate } from 'react-router-dom';
 import { registerBoard } from '../../api/BoardApi';
 import { green } from '@mui/material/colors';
 import useUserStore from '../../store/UserStore';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+
+
+const editorConfig = {
+  ...ClassicEditor.defaultConfig,
+  toolbar: {
+    items: [
+      'codeBlock',
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'link',
+      'bulletedList',
+      'numberedList',
+      '|',
+      'undo',
+      'redo',
+      '|',
+      'imageUpload',
+      'alignment:left',
+      'alignment:right',
+      'alignment:center',
+      'alignment:justify',
+      'fontColor',
+      'fontBackgroundColor',
+      'code',
+
+    ],
+  },
+  language: 'ko',
+  codeBlock: {
+    languages: [
+      { language: 'plaintext', label: 'Plain Text' },
+      { language: 'html', label: 'HTML' },
+      { language: 'java', label: 'Java' },
+      { language: 'javascript', label: 'JavaScript' },
+      { language: 'python', label: 'Python' },
+      { language: 'typescript', label: 'TypeScript' },
+      { language: 'xml', label: 'XML' }
+    ],
+  },
+};
 
 const theme = createTheme({
   components: {
@@ -31,7 +76,7 @@ const theme = createTheme({
           '& .MuiInputLabel-root': {
             fontSize: '14px',
             display: 'block',
-            marginTop: '-0.3rem'
+            marginTop: '-0.2rem'
           },
           '& .MuiInputBase-input': {
             fontSize: '16px',
@@ -89,12 +134,12 @@ const BoardRegisterPage = () => {
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
         <form onSubmit={handleSubmit}>
           <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: '1rem' }}>
-            <TextField value={user.nickName} name="writer" sx={{ width: '50%', borderRadius: '4px', top: '1rem', marginBottom: '10px'}}/>
+            <TextField disabled value={user.nickName} name="writer" sx={{ width: '50%', borderRadius: '4px', top: '1rem', marginBottom: '10px'}}/>
             <Box sx={{ width: "50%" }}/>
             <FormControl variant="standard" sx={{ minWidth: 100 }}>
               <InputLabel id="category">카테고리</InputLabel>
               <Select labelId="category" id="demo-simple-select-standard" value={category} onChange={handleChange} label="category">
-                <MenuItem value="Main">Main</MenuItem>
+                <MenuItem value="All">All</MenuItem>
                 <MenuItem value="Spring">Spring</MenuItem>
                 <MenuItem value="Python">Python</MenuItem>
                 <MenuItem value="Vue">Vue</MenuItem>
@@ -106,7 +151,25 @@ const BoardRegisterPage = () => {
           <Box display='contents'></Box>
           <Box display="flex" flexDirection="column">
             <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} />
-            <TextField label="내용" name="content" multiline minRows={20} maxRows={20} sx={{ borderRadius: '4px', marginTop: '10px' }} />
+            <TextField label="내용" name="content" multiline minRows={20} maxRows={20} sx={{ borderRadius: '10px', marginTop: '10px' }} />
+            <CKEditor
+              editor={ClassicEditor}
+              config={editorConfig} // 수정된 설정 사용
+              data="<p>글을 작성해 주세요!</p>"
+              onReady={(editor) => {
+                console.log('Editor is ready to use!', editor);
+              }}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                console.log({ event, editor, data });
+              }}
+              onBlur={(event, editor) => {
+                console.log('Blur.', editor);
+              }}
+              onFocus={(event, editor) => {
+                console.log('Focus.', editor);
+              }}
+            />
           </Box>
           <Button type="submit">작성 완료</Button>
         </form>
