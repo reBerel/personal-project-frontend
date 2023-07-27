@@ -13,6 +13,7 @@ import useUserStore from '../../store/UserStore';
 import CommentPage from '../../comment/page/CommentPage';
 import springAxiosInst from '../../utility/axiosInstance';
 import CommentListPage from '../../comment/page/CommentListPage';
+import BoardListPage from './BoardListPage';
 
 type SelectedBoardType = {
   boardId: number;
@@ -41,18 +42,21 @@ const BoardReadPage = () => {
   const [readCount, setReadCount] = useState(board?.readCount || 0);
   const [selectedBoard, setSelectedBoard] = useState<SelectedBoardType | null>(null);
   const [isBookmarkChecked, setBookmarkChecked] = useState(false);
+  const [isLikeCountChecked, setLikeCountChecked] = useState(false);
   const user = useUserStore((state) => state.user)
   const navigate = useNavigate()
+  // const likeCountRequestDto = {
+  //   boardId: boardId, // boardId 변수는 적절하게 설정되어 있어야 합니다.
+  //   userId: user.userId // user.userId 변수는 적절하게 설정되어 있어야 합니다.
+  // };
   const handleBookmark = async () => {
     if (user?.userId) {
       setBookmarkChecked((prev) => !prev);
       try {
-        // axios를 사용하여 서버에 북마크 정보 저장 요청 보내기
         const response = await springAxiosInst.post(`/user/bookmark/${user.userId}`, {
           boardId: selectedBoard?.boardId,
         });
         if (response.status === 200) {
-          // 북마크 상태 업데이트
           setBookmarkChecked(!isBookmarkChecked);
         } else {
           console.error('북마크 저장 실패');
@@ -88,7 +92,37 @@ const BoardReadPage = () => {
       handleReadCount(boardId);
     }
   },[boardId])      
-    
+
+  const handleLikeCount = async () => {
+    if (!user.userId) { // 유저가 로그인하지 않은 경우
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+  
+    if (!isLikeCountChecked) { // 아직 추천을 누르지 않은 경우
+      try {
+        const likeCountRequestDto = { userId: user.userId };
+        await springAxiosInst.post(`/board/like-count/${boardId}`, likeCountRequestDto);
+        setLikeCountChecked(true);
+  
+        // 체크박스 상태를 로컬 스토리지에 저장
+        localStorage.setItem(`${boardId}`, "true");
+      } catch (error) {
+        console.error("추천실패:", error);
+        alert("추천에 실패하였습니다.");
+      }
+    } else {
+      alert("이미 추천한 게시물입니다.");
+    }
+  };
+  
+  useEffect(() => {
+    const likeCountCheckedInLocalStorage = localStorage.getItem(`${boardId}`);
+    if (likeCountCheckedInLocalStorage === "true") {
+      setLikeCountChecked(true);
+    }
+  }, [boardId]);
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
@@ -127,18 +161,17 @@ const BoardReadPage = () => {
           }
         <Grid container spacing={2}>
           <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'right' }}>
-            <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} sx={{ display: 'flex', alignItems: 'right', justifyContent: 'right', color: green['500'] }} />
+            <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} sx={{ display: 'flex', alignItems: 'right', justifyContent: 'right', color: green['500'] }} onChange={handleLikeCount} checked={isLikeCountChecked}/>
           </Grid>
           <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'left' }}>
-            {/* 게시물 목록에서 각 게시물을 클릭할 때 handleBoardClick 함수를 호출하도록 함 */}
             <Checkbox checked={isBookmarkChecked} onChange={() => handleBookmark()} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} sx={{ display: 'flex', alignItems: 'left', justifyContent: 'left', color: green['500'] }} />
           </Grid>
         </Grid>
-        <TableCell colSpan={5}>댓글</TableCell>
+        <TableCell colSpan={5} sx={{ fontSize:'15px', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)' }}>댓글</TableCell>
       </Container>
         <CommentListPage/>
         <CommentPage />
-      <BoardListPageSub />
+      <BoardListPage />
     </ThemeProvider>
   )
 }
