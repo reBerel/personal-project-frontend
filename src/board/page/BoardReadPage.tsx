@@ -94,19 +94,16 @@ const BoardReadPage = () => {
   },[boardId])      
 
   const handleLikeCount = async () => {
-    if (!user.userId) { // 유저가 로그인하지 않은 경우
+    if (!user.userId) {
       alert("로그인 후 이용 가능합니다.");
       return;
     }
   
-    if (!isLikeCountChecked) { // 아직 추천을 누르지 않은 경우
+    if (!isLikeCountChecked) {
       try {
         const likeCountRequestDto = { userId: user.userId };
         await springAxiosInst.post(`/board/like-count/${boardId}`, likeCountRequestDto);
         setLikeCountChecked(true);
-  
-        // 체크박스 상태를 로컬 스토리지에 저장
-        localStorage.setItem(`${boardId}`, "true");
       } catch (error) {
         console.error("추천실패:", error);
         alert("추천에 실패하였습니다.");
@@ -115,6 +112,7 @@ const BoardReadPage = () => {
       alert("이미 추천한 게시물입니다.");
     }
   };
+  
   
   useEffect(() => {
     const likeCountCheckedInLocalStorage = localStorage.getItem(`${boardId}`);
