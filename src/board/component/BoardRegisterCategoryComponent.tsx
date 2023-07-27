@@ -15,7 +15,7 @@ const BoardRegisterCategoryComponent = () =>{
       <FormControl variant="standard" sx={{ minWidth: 100 }}>
         <InputLabel id="category">카테고리</InputLabel>
         <Select labelId="category" id="demo-simple-select-standard" value={category} onChange={handleChange} label="category">
-          <MenuItem value={1}>Main</MenuItem>
+          <MenuItem value={1}>All</MenuItem>
           <MenuItem value={2}>Spring</MenuItem>
           <MenuItem value={3}>Python</MenuItem>
           <MenuItem value={4}>Vue</MenuItem>
