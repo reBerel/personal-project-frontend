@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
+import { Box, Button, CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
 import { green } from '@mui/material/colors';
 import React, { useEffect } from 'react'
 import { ThemeProvider } from 'styled-components'
@@ -42,12 +42,12 @@ const theme = createTheme({
 });
 
 const CommentListPage = () => {
-  const { data: comments, isLoading, isError } = useCommentQueryList()
+  const { data: comments, isLoading, isError } = useCommentQueryList(); 
   const setComments = useCommentStore((state) => state.setComments)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const user = useUserStore((state)=> state.user)
-  const { commentId } = useParams<RouteParams>()
+  const { boardId } = useParams<RouteParams>()
   const comment = useCommentStore((state) => state.comment)
 
   
@@ -55,7 +55,7 @@ const CommentListPage = () => {
   };
 
   const handleDeleteClick = async () => {
-    await deleteComment(commentId || ''); // 문자열로 전달
+    await deleteComment(boardId || '');
     queryClient.invalidateQueries('boardList');
     const result = window.confirm('정말로 삭제 하시겠습니까?');
     if (comment.writer === user.nickName) {
@@ -71,13 +71,13 @@ const CommentListPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchCommentList()
+      const data = await fetchCommentList(); // 여기서 boardId를 넘겨줌
       if (data) {
         setComments(data);       
       }
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, [boardId]);
   if (isLoading) {
     return <CircularProgress />
   }
@@ -105,19 +105,26 @@ const CommentListPage = () => {
   ) : (
     comments?.map((comment: any) => (
       <React.Fragment key={comment.commentId}>
-        {/* 첫 번째 행 - writer와 createDate 표시 */}
         <TableRow style={{ cursor: 'pointer' }}>
           <TableCell align='left' sx={{ fontSize: '14px' }}>{comment.writer} <PersonIcon fontSize='inherit'/> </TableCell>
           <TableCell/>
           <TableCell align='right' sx={{ fontSize: '14px' }}>{comment.createDate} <AccessTimeIcon fontSize='inherit'/></TableCell>
         </TableRow>
-        {/* 두 번째 행 - content 표시 */}
         <TableRow style={{ cursor: 'pointer' }}>
           <TableCell align='left' sx={{ fontSize: '14px' }}>{comment.content} </TableCell>
           <TableCell/>
           <TableCell align='right'>
-            <Button onClick={handleEditClick} sx={{fontSize: '11.5px'}} >수정</Button>
-            <Button onClick={handleDeleteClick} color='error' sx={{fontSize: '11.5px'}} >삭제</Button> 
+          {comment.writer === user.nickName ? (
+                <React.Fragment>
+                  <Button onClick={handleEditClick} sx={{ fontSize: '11.5px' }}>수정</Button>
+                  <Button onClick={handleDeleteClick} color='error' sx={{ fontSize: '11.5px' }}>삭제</Button>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Box />
+                  <Box />
+                </React.Fragment>
+              )}
             </TableCell>
         </TableRow>
       </React.Fragment>

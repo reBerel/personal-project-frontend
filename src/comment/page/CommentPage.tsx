@@ -11,7 +11,7 @@ const CommentPage = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation(registerComment, {
     onSuccess: (data) => {
-      queryClient.setQueryData('comment', [data]); // 데이터를 배열로 전달
+      queryClient.setQueryData('comment', [data]);
     },
   });
 
@@ -30,7 +30,7 @@ const CommentPage = () => {
     };
     const {  content } = target.elements;
     const data = {
-      writer: user.nickName, // 닉네임을 사용자의 nickName으로 설정
+      writer: user.nickName,
       content: content.value,
     };
     await mutation.mutateAsync(data);
@@ -52,8 +52,16 @@ const CommentPage = () => {
           <Box display="flex" alignItems="center">
             <Grid container alignItems="center">
               <Grid item xs>
-                <TextField name="content" onClick={handleTextFieldClick} multiline minRows={2} maxRows={5} sx={{ width: '100%' }} />
-                {isTextFieldActive && showButton && <Button type="submit">작성</Button>}
+              {
+                user.uid ? (
+                  <>
+              <TextField name="content" onClick={handleTextFieldClick}multiline minRows={2} maxRows={5} sx={{ width: '100%' }}/>
+                    {isTextFieldActive && showButton && <Button type="submit">작성</Button>}
+                  </>
+                ) : (
+                  <TextField disabled label="로그인 후 이용해 주세요" multiline minRows={2} maxRows={5} sx={{ width: '100%' }} />
+                )
+              }
               </Grid>
             </Grid>
           </Box>
