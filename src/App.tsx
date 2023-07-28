@@ -35,7 +35,10 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <div  style={{
+      background: 'linear-gradient(180deg, #ffffff 1%, #F1FEEA)', // 그라데이션 색상 비율 조정
+      minHeight: '100vh', // 화면 높이와 같게 설정하여 최소 높이를 유지
+    }}>
       <div style={{position: 'relative'}}>      
       <NavigationBar />
       </div>

@@ -34,8 +34,8 @@ export default function BoardSearchComponent() {
       <Grid container spacing={2} alignItems="left">
         <Grid item xs={3}>
           <FormControl variant="standard" sx={{ minWidth: 70, marginTop: '7px' }}>
-            <InputLabel id="demo-simple-select-standard-label" sx={{ fontSize: '12px' }}>카테고리</InputLabel>
-            <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={category} onChange={handleChange} label="카테고리" sx={{ fontSize: '12px' }}>
+            <InputLabel id="demo-simple-select-standard-label" sx={{ fontSize: '12px'}}></InputLabel>
+            <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" value={category} onChange={handleChange} label="카테고리" sx={{ fontSize: '12px', backgroundColor: 'white'  }}>
               <MenuItem value=""><em>없음</em></MenuItem>
               <MenuItem value={10}>제목</MenuItem>
               <MenuItem value={20}>작성자</MenuItem>

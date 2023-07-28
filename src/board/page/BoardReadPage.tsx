@@ -19,7 +19,7 @@ type SelectedBoardType = {
   boardId: number;
 };
 
-const theme = createTheme({
+const theme = createTheme({ 
   components: {
     MuiTableCell: {
       styleOverrides: {
@@ -115,12 +115,15 @@ const BoardReadPage = () => {
   
   
   useEffect(() => {
-    const likeCountCheckedInLocalStorage = localStorage.getItem(`${boardId}`);
-    if (likeCountCheckedInLocalStorage === "true") {
-      setLikeCountChecked(true);
-    }
+    const fetchLikeStatus = async () => {
+      try {
+        const response = await springAxiosInst.get(`/board/like-count/${boardId}`);
+      } catch (error) {
+        console.error("오류 발생:", error);
+      }
+    };  
+    fetchLikeStatus();  
   }, [boardId]);
-
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
@@ -165,7 +168,7 @@ const BoardReadPage = () => {
             <Checkbox checked={isBookmarkChecked} onChange={() => handleBookmark()} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} sx={{ display: 'flex', alignItems: 'left', justifyContent: 'left', color: green['500'] }} />
           </Grid>
         </Grid>
-        <TableCell colSpan={5} sx={{ fontSize:'15px', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)' }}>댓글</TableCell>
+        <TableCell colSpan={5} sx={{ backgroundColor: 'white', fontSize:'15px', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)' }}>댓글</TableCell>
       </Container>
         <CommentListPage/>
         <CommentPage />
