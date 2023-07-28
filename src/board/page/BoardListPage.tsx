@@ -42,7 +42,7 @@ const BoardListPage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
   // 카테고리 선택 상태 관리
-  const selectedCategory = useBoardStore((state) => state.selectedCategory);
+  const selectedCategory = useBoardStore((state) => state.selectedCategory) || "All";
   const filterOptions = ['All', 'Spring', 'Python', 'Vue', 'React', 'Question'];
   // 페이지 변경 처리 함수
   const handlePageChange = (event: any, newPage: number) => {
@@ -73,8 +73,8 @@ const BoardListPage = () => {
       const data = await fetchBoardListPage(pageNumber, pageSize);
       setBoards(data.boards);
       setTotalPages(data.totalPages);
-      console.log('setBoards(), setTotalPages():', data.boards , data.totalPages);
-      console.log('setBoards():',data.boards)
+      console.log('setBoards(), setTotalPages():', data.boards, data.totalPages);
+      console.log('setBoards():', data.boards)
     } catch (error) {
       console.error('게시물 목록을 불러오는데 실패했습니다:', error);
     }
@@ -113,16 +113,17 @@ const BoardListPage = () => {
   // 카테고리 변경 처리 함수
   const handleChangeCategory = (event: React.ChangeEvent<{}>, newValue: string) => {
     console.log("선택한 카테고리:", newValue);
-    useBoardStore.setState({ selectedCategory: newValue.toLowerCase() });
+    useBoardStore.setState({ selectedCategory: newValue });
   };
-    
-// 카테고리에 따른 게시물 필터링 처리
+
+  // 카테고리에 따른 게시물 필터링 처리
   if (selectedCategory === 'All') {
-    filteredBoards = null;
+    filteredBoards = boards;
   } else {
-    filteredBoards = boards?.filter((board) => board.boardCategory.toLowerCase() === selectedCategory.toLowerCase());
+    filteredBoards = boards?.filter((board) => board.boardCategory === selectedCategory);
   }
 
+  console.log('selectedCategory:', selectedCategory);
   console.log('전체 게시물 목록:', boards);
   console.log('필터링된 게시물 목록:', filteredBoards);
 
@@ -142,7 +143,7 @@ const BoardListPage = () => {
               <BottomNavigationAction
                 key={option}
                 value={option}
-                label={option}              
+                label={option}
               />
             ))}
           </BottomNavigation>
@@ -175,19 +176,19 @@ const BoardListPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-            {boards?.length && filteredBoards?.length === 0 ? ( 
-                      <TableRow>
-                        <TableCell colSpan={5} align="center">
-                          현재 등록된 게시물이 없습니다.
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      filteredBoards?.map((board) => (
-                        <TableRow
-                          key={board.boardId}
-                          onClick={() => ReadClick(board.boardId)}
-                          style={{ cursor: 'pointer' }}
-                        >
+              {boards?.length && filteredBoards?.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    현재 등록된 게시물이 없습니다.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredBoards?.map((board) => (
+                  <TableRow
+                    key={board.boardId}
+                    onClick={() => ReadClick(board.boardId)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <TableCell align="center" sx={{ fontSize: '14px' }}>
                       {board.boardId}
                     </TableCell>

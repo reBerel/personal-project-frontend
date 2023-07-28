@@ -35,15 +35,15 @@ const CommentPage = () => {
       elements: {
         writer: { value: string };
         content: { value: string };
-        boardId: {value: number};
+        boardId: { value: number };
       };
     };
-    const {  content } = target.elements;
+    const { content } = target.elements;
     const data = {
       writer: user.nickName,
       content: content.value,
       userId: user.userId,
-      boardId:boardId? parseInt(boardId, 10):0,
+      boardId: boardId ? parseInt(boardId, 10) : 0,
     };
     await mutation.mutateAsync(data);
     window.location.reload();
@@ -65,16 +65,16 @@ const CommentPage = () => {
           <Box display="flex" alignItems="center">
             <Grid container alignItems="center">
               <Grid item xs>
-              {
-                user.uid ? (
-                  <>
-              <TextField name="content" onClick={handleTextFieldClick}multiline minRows={2} maxRows={5} sx={{ width: '100%' }}/>
-                    {isTextFieldActive && showButton && <Button type="submit">작성</Button>}
-                  </>
-                ) : (
-                  <TextField disabled label="로그인 후 이용해 주세요" multiline minRows={2} maxRows={5} sx={{ width: '100%' }} />
-                )
-              }
+                {
+                  user.uid ? (
+                    <>
+                      <TextField name="content" onClick={handleTextFieldClick} multiline minRows={2} maxRows={5} sx={{ width: '100%' }} />
+                      {isTextFieldActive && showButton && <Button type="submit">작성</Button>}
+                    </>
+                  ) : (
+                    <TextField disabled label="로그인 후 이용해 주세요" multiline minRows={2} maxRows={5} sx={{ width: '100%' }} />
+                  )
+                }
               </Grid>
             </Grid>
           </Box>
