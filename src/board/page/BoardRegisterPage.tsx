@@ -104,9 +104,14 @@ const BoardRegisterPage = () => {
   })
 
   const [category, setCategory] = React.useState('');
+  const [content, setContent] = React.useState('');
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
   }
+  const handleEditorChange = (event: any, editor: any) => {
+    const data = editor.getData();
+    setContent(data); // 에디터의 내용을 상태로 업데이트
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -115,15 +120,15 @@ const BoardRegisterPage = () => {
       elements: {
         title: { value: string }
         writer: { value: string }
-        content: { value: string }        
+        // content: { value: string }        
       }
     }
-    const { title, writer, content } = target.elements
+    const { title, writer  } = target.elements
 
     const data = {
       title: title.value,
       writer: writer.value,
-      content: content.value,
+      content: content,
       category: category,
     }
     await mutation.mutateAsync(data)
@@ -151,18 +156,15 @@ const BoardRegisterPage = () => {
           <Box display='contents'></Box>
           <Box display="flex" flexDirection="column">
             <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} />
-            <TextField label="내용" name="content" multiline minRows={20} maxRows={20} sx={{ borderRadius: '10px', marginTop: '10px' }} />
+            {/* <TextField label="내용" name="content" multiline minRows={20} maxRows={20} sx={{ borderRadius: '10px', marginTop: '10px' }} /> */}
             <CKEditor
               editor={ClassicEditor}
               config={editorConfig} // 수정된 설정 사용
-              data="<p>글을 작성해 주세요!</p>"
+              data={content}
               onReady={(editor) => {
                 console.log('Editor is ready to use!', editor);
               }}
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                console.log({ event, editor, data });
-              }}
+              onChange={handleEditorChange}
               onBlur={(event, editor) => {
                 console.log('Blur.', editor);
               }}
@@ -179,3 +181,4 @@ const BoardRegisterPage = () => {
 }
 
 export default BoardRegisterPage;
+

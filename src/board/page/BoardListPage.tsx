@@ -4,12 +4,11 @@ import useBoardStore from '../../store/BoardStore'
 import { fetchBoardList, fetchBoardListPage, useBoardQueryList } from '../../api/BoardApi'
 import { useNavigate } from 'react-router-dom'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import BoardCategoryComponent from '../component/BoardCategoryComponent'
 import { green } from '@mui/material/colors'
 import BoardSearchComponent from '../component/BoardSearchComponent'
 import useUserStore from '../../store/UserStore'
-import { BoardResponse } from '../entity/Board'
 
+let filteredBoards;
 
 const theme = createTheme({
   components: {
@@ -49,7 +48,6 @@ const BoardListPage = () => {
   const handlePageChange = (event: any, newPage: number) => {
     setPage(newPage);
   };
-
   // 게시물 목록 데이터와 로딩, 에러 상태 관리
   const { data: boards, isLoading, isError } = useBoardQueryList();
 
@@ -90,6 +88,7 @@ const BoardListPage = () => {
   // 게시물 읽기 클릭 시 페이지 이동 처리 함수
   const ReadClick = (boardId: number) => {
     navigate(`/key-we-board-page/read/${boardId}`);
+    window.scrollTo(0, 0);
   };
 
   // 글 작성 버튼 클릭 시 페이지 이동 처리 함수
@@ -113,13 +112,16 @@ const BoardListPage = () => {
 
   // 카테고리 변경 처리 함수
   const handleChangeCategory = (event: React.ChangeEvent<{}>, newValue: string) => {
+    console.log("선택한 카테고리:", newValue);
     useBoardStore.setState({ selectedCategory: newValue.toLowerCase() });
   };
-  
-  // 카테고리에 따른 게시물 필터링 처리
-  const filteredBoards = selectedCategory
-    ? boards?.filter((board) => board.boardCategory === selectedCategory)
-    : boards;
+    
+// 카테고리에 따른 게시물 필터링 처리
+  if (selectedCategory === 'All') {
+    filteredBoards = null;
+  } else {
+    filteredBoards = boards?.filter((board) => board.boardCategory.toLowerCase() === selectedCategory.toLowerCase());
+  }
 
   console.log('전체 게시물 목록:', boards);
   console.log('필터링된 게시물 목록:', filteredBoards);
@@ -129,18 +131,21 @@ const BoardListPage = () => {
       <Container maxWidth="md" style={{ marginTop: '3rem' }}>
         {/* BoardCategoryComponent를 BoardListPage로 이동 */}
         <Box>
-        <BottomNavigation
-  showLabels
-  value={selectedCategory}
-  onChange={(event, newValue) => handleChangeCategory(event, newValue)}
-  sx={{ height: '2.5rem', marginBottom: '5px' }}
-  component={Paper}
->
-  {filterOptions.map(option => (
-    <BottomNavigationAction key={option} value={option} label={option} />
-  ))}
-</BottomNavigation>
-
+          <BottomNavigation
+            showLabels
+            value={selectedCategory}
+            onChange={(event, newValue) => handleChangeCategory(event, newValue)}
+            sx={{ height: '2.5rem', marginBottom: '5px' }}
+            component={Paper}
+          >
+            {filterOptions.map(option => (
+              <BottomNavigationAction
+                key={option}
+                value={option}
+                label={option}              
+              />
+            ))}
+          </BottomNavigation>
         </Box>
         <TableContainer component={Paper}>
           <Table aria-label="board table">
@@ -170,19 +175,19 @@ const BoardListPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredBoards?.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} align="center">
-                    현재 등록된 게시물이 없습니다.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredBoards?.map((board) => (
-                  <TableRow
-                    key={board.boardId}
-                    onClick={() => ReadClick(board.boardId)}
-                    style={{ cursor: 'pointer' }}
-                  >
+            {boards?.length && filteredBoards?.length === 0 ? ( 
+                      <TableRow>
+                        <TableCell colSpan={5} align="center">
+                          현재 등록된 게시물이 없습니다.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      filteredBoards?.map((board) => (
+                        <TableRow
+                          key={board.boardId}
+                          onClick={() => ReadClick(board.boardId)}
+                          style={{ cursor: 'pointer' }}
+                        >
                     <TableCell align="center" sx={{ fontSize: '14px' }}>
                       {board.boardId}
                     </TableCell>
