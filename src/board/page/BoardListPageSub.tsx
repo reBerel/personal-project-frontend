@@ -59,9 +59,6 @@ const BoardListPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md" style={{ marginTop: '3rem', minHeight: '100%', position: 'relative' }}>
-        <BoardCategoryComponent onChangeCategory={function (category: string): void {
-          throw new Error('Function not implemented.')
-        } } />
         <TableContainer component={Paper}>
           <Table aria-label='board table'>
             <TableHead>
@@ -71,7 +68,7 @@ const BoardListPage = () => {
                 <TableCell align='center' style={{ width: '45%' }}>제목</TableCell>
                 <TableCell align='center' style={{ width: '10%' }}>작성자</TableCell>
                 <TableCell align='center' style={{ width: '20%' }}>작성일</TableCell>
-                <TableCell align='center' style={{ width: '7%',fontSize: '13px' }}>추천</TableCell>
+                <TableCell align='center' style={{ width: '7%', fontSize: '13px' }}>추천</TableCell>
                 <TableCell align='center' style={{ width: '3%' }}>
                   <RemoveRedEyeIcon fontSize='small' />
                 </TableCell>
