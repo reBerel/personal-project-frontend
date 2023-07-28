@@ -9,51 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { registerBoard } from '../../api/BoardApi';
 import { green } from '@mui/material/colors';
 import useUserStore from '../../store/UserStore';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
-
-
-const editorConfig = {
-  ...ClassicEditor.defaultConfig,
-  toolbar: {
-    items: [
-      'codeBlock',
-      'heading',
-      '|',
-      'bold',
-      'italic',
-      'link',
-      'bulletedList',
-      'numberedList',
-      '|',
-      'undo',
-      'redo',
-      '|',
-      'imageUpload',
-      'alignment:left',
-      'alignment:right',
-      'alignment:center',
-      'alignment:justify',
-      'fontColor',
-      'fontBackgroundColor',
-      'code',
-
-    ],
-  },
-  language: 'ko',
-  codeBlock: {
-    languages: [
-      { language: 'plaintext', label: 'Plain Text' },
-      { language: 'html', label: 'HTML' },
-      { language: 'java', label: 'Java' },
-      { language: 'javascript', label: 'JavaScript' },
-      { language: 'python', label: 'Python' },
-      { language: 'typescript', label: 'TypeScript' },
-      { language: 'xml', label: 'XML' }
-    ],
-  },
-};
+import useCkeditor from '../../hook/useCkeditor';
 
 const theme = createTheme({
   components: {
@@ -94,6 +50,7 @@ const theme = createTheme({
 
 const BoardRegisterPage = () => {
   const user = useUserStore((state)=> state.user) 
+  const ckeditor = useCkeditor('');
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const mutation = useMutation(registerBoard, {
@@ -103,15 +60,10 @@ const BoardRegisterPage = () => {
     }
   })
 
-  const [category, setCategory] = React.useState('');
-  const [content, setContent] = React.useState('');
+  const [category, setCategory] = React.useState('All');
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
   }
-  const handleEditorChange = (event: any, editor: any) => {
-    const data = editor.getData();
-    setContent(data); // 에디터의 내용을 상태로 업데이트
-  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -128,11 +80,13 @@ const BoardRegisterPage = () => {
     const data = {
       title: title.value,
       writer: writer.value,
-      content: content,
+      content: ckeditor?.getData()||'',
       category: category,
     }
     await mutation.mutateAsync(data)
   }
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -156,22 +110,7 @@ const BoardRegisterPage = () => {
           <Box display='contents'></Box>
           <Box display="flex" flexDirection="column">
             <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} />
-            {/* <TextField label="내용" name="content" multiline minRows={20} maxRows={20} sx={{ borderRadius: '10px', marginTop: '10px' }} /> */}
-            <CKEditor
-              editor={ClassicEditor}
-              config={editorConfig} // 수정된 설정 사용
-              data={content}
-              onReady={(editor) => {
-                console.log('Editor is ready to use!', editor);
-              }}
-              onChange={handleEditorChange}
-              onBlur={(event, editor) => {
-                console.log('Blur.', editor);
-              }}
-              onFocus={(event, editor) => {
-                console.log('Focus.', editor);
-              }}
-            />
+            <div id='editor' style={{width:'100%', minHeight:'500px'}}/>
           </Box>
           <Button type="submit">작성 완료</Button>
         </form>
