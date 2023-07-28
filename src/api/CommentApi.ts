@@ -3,31 +3,24 @@ import springAxiosInst from "../utility/axiosInstance";
 import { Comment } from "../comment/entity/Comment";
 import useCommentStore from "../store/CommentStore";
 
-export const useCommentQueryList = (): UseQueryResult<Comment[], unknown> => {
+export const useCommentQueryList = (boardId: number): UseQueryResult<Comment[], unknown> => {
     const setComments = useCommentStore((state) => state.setComments)
 
-    const queryResult: UseQueryResult<Comment[], unknown> = useQuery('CommentList', fetchCommentList, {
-        onSuccess: (data) => {
-            console.log(data)
-            
-            setComments(data)
-        }
-    })
-    return queryResult
-}
-export const fetchCommentList = async (): Promise<Comment[]> => {
-    const response = await springAxiosInst.get<Comment[]>('/comment/list')
-    console.log("이거는 잘 가지니?")
-    console.log(response.data)
-    return response.data
-}
-
-export const registerComment =  async (
-    data: { writer: string, content: string}
-    ): Promise<Comment> => {
-        const response = await springAxiosInst.post<Comment>('/comment/register', data)
-        return response.data
-}
+    const queryResult: UseQueryResult<Comment[], unknown> = useQuery(['CommentList', boardId], () => fetchCommentList(boardId), {
+      onSuccess: (data) => {
+        console.log(data);
+        setComments(data);
+      }
+    });
+  
+    return queryResult;
+  };
+  export const fetchCommentList = async (boardId: number): Promise<Comment[]> => {
+    const response = await springAxiosInst.get<Comment[]>(`/comment/list/${boardId}`);
+    console.log("댓글 목록을 가져왔습니다.");
+    console.log(response.data);
+    return response.data;
+  };
 
 export const deleteComment = async (commentId: string): Promise<void> => {
     try {
@@ -51,3 +44,8 @@ export const useBoardUpdateMutation = (): UseMutationResult<Comment, unknown, Co
         onSuccess: (data) => {
             QueryClient.setQueryData(['Comment', data.commentId],data)
 }})}
+
+export const registerComment = async (data: { writer: string, content: string, userId: number, boardId: number}): Promise<Comment> => {
+  const response = await springAxiosInst.post<Comment>('/comment/new/register', data);
+  return response.data;
+};

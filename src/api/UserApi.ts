@@ -5,10 +5,10 @@ export const loginUser = async(uid: string): Promise<User> => {
   const result = await springAxiosInst.get<User>(`/user/login/${uid}`)
   return result.data;
 }
-export const bookmarkChecking = async (uid: string): Promise<User> => {
-  const result = await springAxiosInst.get<User>(`/user/bookmark/${uid}`)
-  return result.data;
-}
+// export const bookmarkChecking = async (uid: string): Promise<User> => {
+//   const result = await springAxiosInst.get<User>(`/user/bookmark/${uid}`)
+//   return result.data;
+// }
 export const userDeleteHandler = async (userId: string): Promise<void> => {
   try {
     const parsedUserId = parseInt(userId, 10); // 문자열을 숫자로 변환
