@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
 import { green } from '@mui/material/colors';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteComment, fetchCommentList, updateComment, useCommentQueryList } from '../../api/CommentApi';
@@ -11,7 +11,7 @@ import { useQueryClient } from 'react-query';
 import useCommentStore from '../../store/CommentStore';
 
 interface RouteParams {
-  commentId: string
+  boardId: string
   [key: string]: string
 }
 
@@ -42,15 +42,16 @@ const theme = createTheme({
 });
 
 const CommentListPage = () => {
-  const { data: comments, isLoading, isError } = useCommentQueryList(); 
+  const { boardId } = useParams<RouteParams>()
+  const parsedBoardId = boardId as unknown as number;
+  const [commentList, setCommentList] = useState<any[]>([]);
+  const { data: comments, isLoading, isError } = useCommentQueryList(parsedBoardId); 
   const setComments = useCommentStore((state) => state.setComments)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const user = useUserStore((state)=> state.user)
-  const { boardId } = useParams<RouteParams>()
   const comment = useCommentStore((state) => state.comment)
 
-  
   const handleEditClick = () => {    
   };
 
@@ -62,22 +63,26 @@ const CommentListPage = () => {
       if (result === true) {
         alert("삭제");
         navigate("/");
+        window.location.reload();
       } else {
         alert('취소');
       }
   }
 }
-  
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchCommentList(); // 여기서 boardId를 넘겨줌
+
+useEffect(() => {
+  const fetchData = async () => {
+    if (parsedBoardId !== undefined) {
+      const data = await fetchCommentList(parsedBoardId);
       if (data) {
-        setComments(data);       
+        setComments(data);        
+        setCommentList(data);
       }
     }
-    fetchData();
-  }, [boardId]);
+  };
+  fetchData();
+}, [parsedBoardId])
   if (isLoading) {
     return <CircularProgress />
   }

@@ -3,15 +3,24 @@ import React, { useState } from 'react';
 import useUserStore from '../../store/UserStore';
 import { useMutation, useQueryClient } from 'react-query';
 import { registerComment } from '../../api/CommentApi';
+import useBoardStore from '../../store/BoardStore';
+import { useParams } from 'react-router-dom';
 
 const CommentPage = () => {
+  const { boardId } = useParams();
   const [showButton, setShowButton] = useState(false);
   const [isTextFieldActive, setIsTextFieldActive] = useState(false);
   const user = useUserStore((state) => state.user);
   const queryClient = useQueryClient();
+
   const mutation = useMutation(registerComment, {
     onSuccess: (data) => {
-      queryClient.setQueryData('comment', [data]);
+      queryClient.setQueryData('comment', (prevData: any) => {
+        if (prevData) {
+          return [...prevData, data];
+        }
+        return [data];
+      });
     },
   });
 
@@ -26,14 +35,18 @@ const CommentPage = () => {
       elements: {
         writer: { value: string };
         content: { value: string };
+        boardId: {value: number};
       };
     };
     const {  content } = target.elements;
     const data = {
       writer: user.nickName,
       content: content.value,
+      userId: user.userId,
+      boardId:boardId? parseInt(boardId, 10):0,
     };
     await mutation.mutateAsync(data);
+    window.location.reload();
   };
 
   return (
