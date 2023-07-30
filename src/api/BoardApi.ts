@@ -18,6 +18,21 @@ export const fetchBoardList = async (): Promise<Board[]> => {
     return response.data
 }
 
+export const useBookmarkQueryList = (userId:number): UseQueryResult<Board[], unknown> => {
+  const setBoards = useBoardStore((state) => state.setBoards)
+  
+  const queryResult: UseQueryResult<Board[], unknown> = useQuery('bookmarkList',()=>fetchBookmarkList(userId), {
+      onSuccess: (data) => {
+          setBoards(data)
+      }
+  })
+  return queryResult
+}
+export const fetchBookmarkList = async (userId:number): Promise<Board[]> => {
+  const response = await springAxiosInst.get<Board[]>(`/user/bookmarkList/${userId}`)
+  return response.data
+}
+
 export const registerBoard =  async (
     data: {title: string, writer: string, content: string, category: string}
     ): Promise<Board> => {
