@@ -123,9 +123,9 @@ const BoardListPage = () => {
     filteredBoards = boards?.filter((board) => board.boardCategory === selectedCategory);
   }
 
-  console.log('selectedCategory:', selectedCategory);
-  console.log('전체 게시물 목록:', boards);
-  console.log('필터링된 게시물 목록:', filteredBoards);
+  // console.log('selectedCategory:', selectedCategory);
+  // console.log('전체 게시물 목록:', boards);
+  // console.log('필터링된 게시물 목록:', filteredBoards);
 
   return (
     <ThemeProvider theme={theme}>
@@ -184,32 +184,14 @@ const BoardListPage = () => {
                 </TableRow>
               ) : (
                 filteredBoards?.map((board) => (
-                  <TableRow
-                    key={board.boardId}
-                    onClick={() => ReadClick(board.boardId)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <TableCell align="center" sx={{ fontSize: '14px' }}>
-                      {board.boardId}
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '12px' }}>
-                      {board.boardCategory}
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '14px' }}>
-                      {board.title} [{board.replyCount ? board.replyCount : 0}]
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '14px' }}>
-                      {board.writer}
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '12px' }}>
-                      {board.createDate}
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '14px' }}>
-                      {board.likeCount ? board.likeCount : 0}
-                    </TableCell>
-                    <TableCell align="center" sx={{ fontSize: '14px' }}>
-                      {board.readCount ? board.readCount : 0}
-                    </TableCell>
+                  <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{ cursor: 'pointer' }}>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardId}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardCategory}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.title} [{board.comments.length}]</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.writer}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.createDate}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.likes.length}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.readCount}</TableCell>
                   </TableRow>
                 ))
               )}

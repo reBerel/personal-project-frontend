@@ -14,10 +14,7 @@ import springAxiosInst from '../../utility/axiosInstance';
 import CommentListPage from '../../comment/page/CommentListPage';
 import BoardListPage from './BoardListPage';
 import useCkeditor from '../../hook/useCkeditor';
-
-type SelectedBoardType = {
-  boardId: number;
-};
+import { useQueryClient } from 'react-query';
 
 const theme = createTheme({
   components: {
@@ -39,32 +36,27 @@ const theme = createTheme({
 const BoardReadPage = () => {
   const { boardId } = useParams()
   const { data: board } = useBoardQuery(boardId || '');
-  const ckeditor = useCkeditor(board?.content||'로딩중');
-  const [readCount, setReadCount] = useState(board?.readCount || 0);
-  const [selectedBoard, setSelectedBoard] = useState<SelectedBoardType | null>(null);
-  const [isBookmarkChecked, setBookmarkChecked] = useState(false);
-  const [isLikeCountChecked, setLikeCountChecked] = useState(false);
-
+  const ckeditor = useCkeditor(true,board?.content||'로딩중');
+  const queryClient = useQueryClient()
+  
   const user = useUserStore((state) => state.user)
   const navigate = useNavigate()
-  // const likeCountRequestDto = {
-  //   boardId: boardId, // boardId 변수는 적절하게 설정되어 있어야 합니다.
-  //   userId: user.userId // user.userId 변수는 적절하게 설정되어 있어야 합니다.
-  // };
+
+  const bookmarkChecked = (board?.bookmarks.filter((bookmark)=>bookmark.userId===user.userId).length||-1)===1;
+  const likeChecked = (board?.likes.filter((like)=>like.userId===user.userId).length||-1)===1;
+
   const handleBookmark = async () => {
     if (user?.userId) {
-      setBookmarkChecked((prev) => !prev);
       try {
-        const response = await springAxiosInst.post(`/user/bookmark/${user.userId}`, {
-          boardId: selectedBoard?.boardId,
-        });
+        const response = await springAxiosInst.post(`/user/bookmark/${user.userId}`, { boardId });
         if (response.status === 200) {
-          setBookmarkChecked(!isBookmarkChecked);
+          queryClient.invalidateQueries(['board', boardId]);
+          queryClient.invalidateQueries('bookmarkList');
         } else {
-          console.error('북마크 저장 실패');
+          console.error('북마크 저장 실패1');
         }
       } catch (error) {
-        console.error('북마크 저장 실패:', error);
+        console.error('북마크 저장 실패2:', error);
       }
     } else {
       alert('로그인 후 이용 가능합니다.');
@@ -84,15 +76,8 @@ const BoardReadPage = () => {
     fetchBoardData();
   }, [boardId]);
 
-  const handleReadCount = async (boardId: string) => {
-    await incrementReadCount(boardId);
-    setReadCount((prevReadCount) => prevReadCount + 1)
-    console.log("prevReadCount()");
-  }
   useEffect(() => {
-    if (boardId) {
-      handleReadCount(boardId);
-    }
+    if (boardId)  incrementReadCount(boardId);
   }, [boardId])
 
   const handleLikeCount = async () => {
@@ -101,11 +86,11 @@ const BoardReadPage = () => {
       return;
     }
 
-    if (!isLikeCountChecked) {
+    if (!likeChecked) {
       try {
         const likeCountRequestDto = { userId: user.userId };
         await springAxiosInst.post(`/board/like-count/${boardId}`, likeCountRequestDto);
-        setLikeCountChecked(true);
+        queryClient.invalidateQueries(['board', boardId]);
       } catch (error) {
         console.error("추천실패:", error);
         alert("추천에 실패하였습니다.");
@@ -114,7 +99,6 @@ const BoardReadPage = () => {
       alert("이미 추천한 게시물입니다.");
     }
   };
-
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
@@ -136,7 +120,7 @@ const BoardReadPage = () => {
                 <TableCell colSpan={1} align='left'>No. {boardId} </TableCell>
                 <TableCell colSpan={4} align='left'>[{board?.boardCategory ? board.boardCategory : '-'}] 제목:{board?.title} [{board?.replyCount ? board.replyCount : 0}] </TableCell>
                 <TableCell>
-                  <Checkbox checked={isBookmarkChecked} onChange={() => handleBookmark()} sx={{ color: green['500'] }} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} />
+                  <Checkbox checked={bookmarkChecked} onChange={() => handleBookmark()} sx={{ color: green['500'] }} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} />
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -144,7 +128,7 @@ const BoardReadPage = () => {
                 <TableCell sx={{ width: '5%' }}></TableCell>
                 <TableCell sx={{ width: '25%' }}></TableCell>
                 <TableCell align='center' sx={{ width: '28%' }}>작성일 {board?.createDate} </TableCell>
-                <TableCell align='left' sx={{ width: '10%' }}>추천 {board?.likeCount ? board.likeCount : 0} </TableCell>
+                <TableCell align='left' sx={{ width: '10%' }}>추천 {board?.likes.length||0} </TableCell>
                 <TableCell align='left' sx={{ width: '8%' }}>
                   <RemoveRedEyeIcon fontSize='small' />
                   {board?.readCount}
@@ -163,16 +147,16 @@ const BoardReadPage = () => {
         }
         <Grid container spacing={2}>
           <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'right' }}>
-            <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} sx={{ display: 'flex', alignItems: 'right', justifyContent: 'right', color: green['500'] }} onChange={handleLikeCount} checked={isLikeCountChecked} />
+            <Checkbox checked={likeChecked} icon={<FavoriteBorder />} checkedIcon={<Favorite />} sx={{ display: 'flex', alignItems: 'right', justifyContent: 'right', color: green['500'] }} onChange={handleLikeCount} />
           </Grid>
           <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'left' }}>
-            <Checkbox checked={isBookmarkChecked} onChange={() => handleBookmark()} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} sx={{ display: 'flex', alignItems: 'left', justifyContent: 'left', color: green['500'] }} />
+            <Checkbox checked={bookmarkChecked} onChange={() => handleBookmark()} icon={<BookmarkBorderIcon />} checkedIcon={<BookmarkIcon />} sx={{ display: 'flex', alignItems: 'left', justifyContent: 'left', color: green['500'] }} />
           </Grid>
         </Grid>
         <TableCell colSpan={5} sx={{ backgroundColor: 'white', fontSize: '15px', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)' }}>댓글</TableCell>
       </Container>
-      <CommentListPage />
-      <CommentPage />
+      <CommentListPage  comments={board?.comments||[]}/>
+      <CommentPage/>
       <BoardListPage />
     </ThemeProvider>
   )

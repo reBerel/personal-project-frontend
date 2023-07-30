@@ -1,3 +1,5 @@
+import { Comment } from "../../comment/entity/Comment";
+
 export interface Board {
     boardId: number;
     title: string;
@@ -9,6 +11,15 @@ export interface Board {
     readCount: number;
     replyCount: number;
     boardCategory: string;
+    comments: Comment[];
+    likes: {
+        likeId:number;
+        userId:number;
+    }[],
+    bookmarks: {
+        bookmarkId:number;
+        userId:number;
+    }[],
 }
 export interface ModifyBoard{
     boardId: string | undefined;

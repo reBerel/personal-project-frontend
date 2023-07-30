@@ -50,7 +50,7 @@ const theme = createTheme({
 
 const BoardRegisterPage = () => {
   const user = useUserStore((state)=> state.user) 
-  const ckeditor = useCkeditor('');
+  const ckeditor = useCkeditor(false,'');
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const mutation = useMutation(registerBoard, {
@@ -93,7 +93,7 @@ const BoardRegisterPage = () => {
       <Container maxWidth="md" sx={{ marginTop: '2rem' }}>
         <form onSubmit={handleSubmit}>
           <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mb: '1rem' }}>
-            <TextField disabled value={user.nickName} name="writer" sx={{ width: '50%', borderRadius: '4px', top: '1rem', marginBottom: '10px'}}/>
+            <TextField disabled value={user.nickName} name="writer" sx={{ width: '50%', borderRadius: '4px', top: '1rem', marginBottom: '10px', backgroundColor: '#ffffff', color: '#000000',}}/>
             <Box sx={{ width: "50%" }}/>
             <FormControl variant="standard" sx={{ minWidth: 100 }}>
               <InputLabel id="category">카테고리</InputLabel>
@@ -109,7 +109,7 @@ const BoardRegisterPage = () => {
           </Box>
           <Box display='contents'></Box>
           <Box display="flex" flexDirection="column">
-            <TextField label="제목" name="title" sx={{ borderRadius: '10px' }} />
+            <TextField label="제목" name="title" sx={{ borderRadius: '10px', backgroundColor: '#ffffff' }} />
             <div id='editor' style={{width:'100%', minHeight:'500px'}}/>
           </Box>
           <Button type="submit">작성 완료</Button>
