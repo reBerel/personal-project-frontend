@@ -2,7 +2,7 @@ import { useEffect, useRef,useState } from 'react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import springAxiosInst from '../utility/axiosInstance';
 
-const useCkeditor = (content:string): ClassicEditor | undefined => {
+const useCkeditor = (readonly:boolean,content:string): ClassicEditor | undefined => {
 
   const [ckeditor,setCkeditor] = useState<ClassicEditor>();
   const ckeditorRef = useRef<ClassicEditor>();
@@ -13,7 +13,7 @@ const useCkeditor = (content:string): ClassicEditor | undefined => {
       const CKEDITOR = window['CKEDITOR' as any] as any;
       CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
         toolbar: {
-          items: !content?[
+          items: !readonly?[
             'findAndReplace', 'selectAll', '|',
             'heading', '|',
             'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
@@ -51,7 +51,7 @@ const useCkeditor = (content:string): ClassicEditor | undefined => {
           ]
         },
         // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-        placeholder: !content?'아쎄이 장흄만 기열!!':'로딩중',
+        placeholder: !readonly?'로딩중':'로딩중',
         // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
         fontFamily: {
           options: [
@@ -141,16 +141,8 @@ const useCkeditor = (content:string): ClassicEditor | undefined => {
         ]
       }).then(async(editor: ClassicEditor) => {
         ckeditorRef.current = editor;
-        if(content) {
-          const result = await springAxiosInst('/board/detail/'+content);
-          console.log(result);
-          if(!result.data) {
-            editor.setData('네트워크 오류입니다.');
-          } else {
-            editor.setData(result.data);
-          }
-          editor.enableReadOnlyMode('sex');
-        }
+        if(content) editor.setData(content);
+        if(readonly) editor.enableReadOnlyMode('sex');
         setCkeditor(editor);
       }).catch((err: Error) => { console.log(err) });
     };
@@ -165,7 +157,7 @@ const useCkeditor = (content:string): ClassicEditor | undefined => {
       ckeditorRef.current?.destroy();
       createEditor();
     }
-  }, [content]);
+  }, [readonly,content]);
 
   return ckeditor
 };
