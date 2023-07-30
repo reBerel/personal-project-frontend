@@ -142,7 +142,6 @@ const UserBookmark = () => {
           </TableBody>
         </Table>
       </TableContainer>
-        <Pagination page={page} count={totalPages} siblingCount={2} boundaryCount={1} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton sx={{ marginTop: '0.5rem' }}/>
       </Container>
     </ThemeProvider>
   )

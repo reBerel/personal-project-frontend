@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 
 const springAxiosInst: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:7777',
+    baseURL: process.env.REACT_APP_BACK_IP,
     timeout: 2500
 })
 

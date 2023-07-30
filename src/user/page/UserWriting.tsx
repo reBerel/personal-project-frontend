@@ -97,7 +97,6 @@ const UserWriting = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <BoardPageComponent/>
       </Container>
     </ThemeProvider>
   )
