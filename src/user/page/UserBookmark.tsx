@@ -6,7 +6,7 @@ import { green } from '@mui/material/colors';
 import useUserStore from '../../store/UserStore';
 import useBoardStore from '../../store/BoardStore';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchBoardListPage, useBoardQueryList } from '../../api/BoardApi';
+import { fetchBoardListPage, useBookmarkQueryList } from '../../api/BoardApi';
 import BookIcon from '@mui/icons-material/Book';
 import { Board, BoardResponse } from '../../board/entity/Board'
 
@@ -46,11 +46,9 @@ const UserBookmark = () => {
     setPage(newPage);
   };
 
-  const { data: boards, isLoading, isError } = useBoardQueryList();
-  const { boardId } = useParams(); 
-  const users = useUserStore((state) => state.users);
+  const user = useUserStore((state) => state.user);
+  const { data: boards, isLoading, isError } = useBookmarkQueryList(user.userId);
   const setBoards = useBoardStore((state) => state.setBoards);
-  const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
   const navigate = useNavigate();
 
   const fetchBoardsByPage = async (pageNumber: number) => {
@@ -97,11 +95,6 @@ const UserBookmark = () => {
         <BookIcon /> MyBookMark
       </Typography>
       {/* 선택된 게시물 정보 출력 */}
-      {selectedBoard && (
-        <Typography variant="h6" sx={{ mt: 2 }}>
-          선택된 게시물: {selectedBoard?.title}
-        </Typography>
-      )}
       <TableContainer component={Paper}>
         <Table aria-label="board table">
           <TableHead>
@@ -127,38 +120,23 @@ const UserBookmark = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users?.length === 0 ? (
+            {boards?.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} align="center">
                   현재 등록된 게시물이 없습니다.
                 </TableCell>
               </TableRow>
             ) : (
-              users?.map((user) => (
-                <TableRow
-                  key={user.userId}
-                  onClick={() => ReadClick(user.userId)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <TableCell align="center" sx={{ fontSize: '14px' }}>
-                    {user.userId}
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontSize: '14px' }}>
-                    {user.board.title} [{user.board.replyCount ? user.board.replyCount : 0}]
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontSize: '14px' }}>
-                    {user.board.writer}
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontSize: '12px' }}>
-                    {user.board.createDate}
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontSize: '14px' }}>
-                    {user.board.likeCount ? user.board.likeCount : 0}
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontSize: '14px' }}>
-                    {user.board.readCount ? user.board.readCount : 0}
-                  </TableCell>
-                </TableRow>
+              boards?.map((board) => (
+              <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{ cursor: 'pointer' }}>
+                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardId}</TableCell>
+                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardCategory}</TableCell>
+                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.title} [{board.comments.length}]</TableCell>
+                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.writer}</TableCell>
+                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.createDate}</TableCell>
+                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.likes.length}</TableCell>
+                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.readCount}</TableCell>
+              </TableRow>
               ))
             )}
           </TableBody>

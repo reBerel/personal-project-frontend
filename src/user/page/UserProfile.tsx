@@ -46,7 +46,8 @@ const UserProfile = () => {
           <Table aria-label='board table'>
             <TableHead>
               <TableRow>
-                <TableCell align='center' sx={{ fontSize: '16px', mb: '1rem' }}>닉네임: {user.nickName} <Button onClick={handleChange}>변경</Button></TableCell>
+                <TableCell align='center' sx={{ fontSize: '16px', mb: '1rem' }}>닉네임: {user.nickName} </TableCell>
+                {/* <Button onClick={handleChange}>변경</Button> */}
               </TableRow>
               <TableRow>
                 <TableCell align='center' sx={{ fontSize: '16px', mb: '1rem' }}>이름: {user.name}</TableCell>
@@ -57,7 +58,7 @@ const UserProfile = () => {
             </TableHead>
           </Table>
         </TableContainer>
-        <Button color='error' component={Paper} variant='outlined' sx={{ marginTop: '0.5rem', textAlign: 'center', width: '100%' }} onClick={deleteHandleprofile}>회원탈퇴</Button>
+        <Button color='error' component={Paper} variant='outlined' sx={{ backgroundColor: "#ffffff", marginTop: '0.5rem', textAlign: 'center', width: '100%' }} onClick={deleteHandleprofile}>회원탈퇴</Button>
       </Container>
     </ThemeProvider>
   )
