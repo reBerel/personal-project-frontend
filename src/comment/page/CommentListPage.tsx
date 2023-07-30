@@ -1,14 +1,13 @@
-import { Box, Button, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
+import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, createTheme } from '@mui/material'
 import { green } from '@mui/material/colors';
-import React, { useEffect, useState } from 'react'
+import React,{useState} from 'react'
 import { ThemeProvider } from 'styled-components'
 import { useParams } from 'react-router-dom';
-import { deleteComment, fetchCommentList, useCommentQueryList } from '../../api/CommentApi';
+import { deleteComment, updateComment } from '../../api/CommentApi';
 import useUserStore from '../../store/UserStore';
 import PersonIcon from '@mui/icons-material/Person';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useQueryClient } from 'react-query';
-import useCommentStore from '../../store/CommentStore';
 import { Comment } from '../entity/Comment';
 
 interface RouteParams {
@@ -42,54 +41,37 @@ const theme = createTheme({
   },
 });
 
-const CommentListPage = () => {
+const CommentListPage = ({comments}:{comments:Comment[]}) => {
   const { boardId } = useParams<RouteParams>()
-  const parsedBoardId = boardId as unknown as number;
-  const [commentList, setCommentList] = useState<any[]>([]);
-  const { data: comments, isLoading, isError } = useCommentQueryList(parsedBoardId);
-  const setComments = useCommentStore((state) => state.setComments)
   const queryClient = useQueryClient()
   const user = useUserStore((state) => state.user)
+  const [editComment, setEditComment] = useState<Comment>({} as Comment);
 
-  const handleEditClick = (comment: Comment) => {
+  const handleEditClick = async(comment: Comment) => {
+    if(editComment.commentId===comment.commentId) {
+      await updateComment(editComment);
+      queryClient.invalidateQueries(['board', boardId]);
+      setEditComment({} as Comment);
+      alert("수정");
+    } else {
+      setEditComment(comment)
+    }
   };
 
   const handleDeleteClick = async (comment: Comment) => {
-    await deleteComment(boardId || '');
-    queryClient.invalidateQueries('boardList');
-    console.log(queryClient.invalidateQueries('boardList'))
     const result = window.confirm('정말로 삭제 하시겠습니까?');
     console.log(comment, user.nickName)
     if (comment.writer === user.nickName) {
       if (result === true) {
+        await deleteComment(comment.commentId);
+        queryClient.invalidateQueries(['board', boardId]);
         alert("삭제");
-        window.location.reload();
       } else {
         alert('취소');
       }
     } else {
       alert("에러입니다.")
     }
-  }
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (parsedBoardId !== undefined) {
-        const data = await fetchCommentList(parsedBoardId);
-        if (data) {
-          setComments(data);
-          setCommentList(data);
-        }
-      }
-    };
-    fetchData();
-  }, [parsedBoardId])
-  if (isLoading) {
-    return <CircularProgress />
-  }
-  if (isError) {
-    return <Typography>댓글을 갖고오는 중 에러 발생!</Typography>
   }
 
   return (
@@ -110,7 +92,7 @@ const CommentListPage = () => {
                   <TableCell colSpan={5} align='center'>현재 작성된 댓글이 없습니다.</TableCell>
                 </TableRow>
               ) : (
-                comments?.map((comment: any) => (
+                comments?.map((comment: Comment) => (
                   <React.Fragment key={comment.commentId}>
                     <TableRow style={{ cursor: 'pointer' }}>
                       <TableCell align='left' sx={{ fontSize: '14px' }}>{comment.writer} <PersonIcon fontSize='inherit' /> </TableCell>
@@ -118,7 +100,16 @@ const CommentListPage = () => {
                       <TableCell align='right' sx={{ fontSize: '14px' }}>{comment.createDate} <AccessTimeIcon fontSize='inherit' /></TableCell>
                     </TableRow>
                     <TableRow style={{ cursor: 'pointer' }}>
-                      <TableCell align='left' sx={{ fontSize: '14px' }}>{comment.content} </TableCell>
+                      {
+                        editComment.commentId!==comment.commentId?
+                        <TextField 
+                          disabled={true} value={comment.content} multiline minRows={1} maxRows={5} sx={{ width: '100%', outline:'none' }} />
+                        :
+                        <TextField 
+                        disabled={false} 
+                        onChange={(e)=>{setEditComment((cmt)=>({...cmt, content:e.target.value}))}}
+                        value={editComment.content} multiline minRows={1} maxRows={5} sx={{ width: '100%' }} />
+                      }
                       <TableCell />
                       <TableCell align='right'>
                         {comment.writer === user.nickName ? (
@@ -138,7 +129,6 @@ const CommentListPage = () => {
                 ))
               )}
             </TableBody>
-
           </Table>
         </TableContainer>
       </Container>

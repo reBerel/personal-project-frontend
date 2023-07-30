@@ -11,6 +11,7 @@ const CommentPage = () => {
   const [showButton, setShowButton] = useState(false);
   const [isTextFieldActive, setIsTextFieldActive] = useState(false);
   const user = useUserStore((state) => state.user);
+  const [content, setContent] = useState('');
   const queryClient = useQueryClient();
 
   const mutation = useMutation(registerComment, {
@@ -46,7 +47,8 @@ const CommentPage = () => {
       boardId: boardId ? parseInt(boardId, 10) : 0,
     };
     await mutation.mutateAsync(data);
-    window.location.reload();
+    queryClient.invalidateQueries(['board', boardId]);
+    setContent('');
   };
 
   return (
@@ -68,7 +70,11 @@ const CommentPage = () => {
                 {
                   user.uid ? (
                     <>
-                      <TextField name="content" onClick={handleTextFieldClick} multiline minRows={2} maxRows={5} sx={{ width: '100%' }} />
+                      <TextField name="content" 
+                        onClick={handleTextFieldClick} 
+                        value={content}
+                        onChange={(e)=>setContent(e.currentTarget.value)}
+                        multiline minRows={2} maxRows={5} sx={{ width: '100%' }} />
                       {isTextFieldActive && showButton && <Button type="submit">작성</Button>}
                     </>
                   ) : (
