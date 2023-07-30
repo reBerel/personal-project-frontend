@@ -21,12 +21,12 @@ export default function NavigationBar() {
       <AppBar position="static" sx={{ backgroundColor: '#6BB07B' }}>
         <Toolbar>
           <Grid container spacing={1} sx={{ marginTop: '10px' }}>
-            <Grid item xs={2}>
+            <Grid item xs={1}>
               <Box />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
               <Typography color='white' variant="h6" component={Link} to="/key-we-board-page/list" style={{ textDecoration: "none" }}>
-                KeyWe |
+                <img src="/assets/KEYWE.png" style={{height:'30px'}}/>
               </Typography>
             </Grid>
             <Grid item xs={3.7}>

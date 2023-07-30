@@ -46,7 +46,7 @@ const NavigationSideBar = () => {
             user.uid?
             (
             <List>
-              {['프로필', '내정보'].map((text, index) => (
+              {['프로필'].map((text, index) => (
                 <ListItem key={text} disablePadding>
                   <ListItemButton  component={Link} to={index === 0? `/key-we-board-page/profile/${user.uid}`: `/key-we-board-page/info/${user.uid}`}>
                     <ListItemIcon>
