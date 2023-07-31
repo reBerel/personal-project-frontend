@@ -102,6 +102,9 @@ const UserBookmark = () => {
               <TableCell align="center" style={{ width: '7%' }}>
                 No.
               </TableCell>
+              <TableCell align="center" style={{ width: '8%' }}>
+                분류
+              </TableCell>
               <TableCell align="center" style={{ width: '45%' }}>
                 제목
               </TableCell>
@@ -111,7 +114,7 @@ const UserBookmark = () => {
               <TableCell align="center" style={{ width: '20%' }}>
                 작성일
               </TableCell>
-              <TableCell align="center" style={{ width: '7%' }}>
+              <TableCell align="center" style={{ width: '10%' }}>
                 추천
               </TableCell>
               <TableCell align="center" style={{ width: '3%' }}>
@@ -128,15 +131,15 @@ const UserBookmark = () => {
               </TableRow>
             ) : (
               boards?.map((board) => (
-              <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{ cursor: 'pointer' }}>
-                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardId}</TableCell>
-                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardCategory}</TableCell>
-                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.title} [{board.comments.length}]</TableCell>
-                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.writer}</TableCell>
-                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.createDate}</TableCell>
-                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.likes.length}</TableCell>
-                <TableCell align='center' sx={{ fontSize: '13px' }}>{board.readCount}</TableCell>
-              </TableRow>
+                <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{ cursor: 'pointer' }}>
+                  <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardId}</TableCell>
+                  <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardCategory}</TableCell>
+                  <TableCell align='center' sx={{ fontSize: '13px' }}>{board.title} [{board.comments.length}]</TableCell>
+                  <TableCell align='center' sx={{ fontSize: '13px' }}>{board.writer}</TableCell>
+                  <TableCell align='center' sx={{ fontSize: '13px' }}>{board.createDate}</TableCell>
+                  <TableCell align='center' sx={{ fontSize: '13px' }}>{board.likes.length}</TableCell>
+                  <TableCell align='center' sx={{ fontSize: '13px' }}>{board.readCount}</TableCell>
+                </TableRow>
               ))
             )}
           </TableBody>

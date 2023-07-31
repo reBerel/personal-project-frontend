@@ -68,13 +68,26 @@ const UserWriting = () => {
           <Table aria-label='board table'>
             <TableHead>
               <TableRow>
-                <TableCell align='center' style={{ width: '7%' }}>No.</TableCell>
-                <TableCell align='center' style={{ width: '45%' }}>제목</TableCell>
-                <TableCell align='center' style={{ width: '10%' }}>작성자</TableCell>
-                <TableCell align='center' style={{ width: '20%' }}>작성일</TableCell>
-                <TableCell align='center' style={{ width: '7%' }}>추천</TableCell>
-                <TableCell align='center' style={{ width: '3%' }}>
-                  <RemoveRedEyeIcon fontSize='small' />
+                <TableCell align="center" style={{ width: '7%' }}>
+                  No.
+                </TableCell>
+                <TableCell align="center" style={{ width: '8%' }}>
+                  분류
+                </TableCell>
+                <TableCell align="center" style={{ width: '45%' }}>
+                  제목
+                </TableCell>
+                <TableCell align="center" style={{ width: '10%' }}>
+                  작성자
+                </TableCell>
+                <TableCell align="center" style={{ width: '20%' }}>
+                  작성일
+                </TableCell>
+                <TableCell align="center" style={{ width: '10%' }}>
+                  추천
+                </TableCell>
+                <TableCell align="center" style={{ width: '3%' }}>
+                  <RemoveRedEyeIcon fontSize="small" />
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -86,12 +99,13 @@ const UserWriting = () => {
               ) : (
                 currentUserBoards?.map((board) => (
                   <TableRow key={board.boardId} onClick={() => ReadClick(board.boardId)} style={{ cursor: 'pointer' }}>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{board.boardId}</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{board.title} [{board.replyCount ? board.replyCount : 0}]</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{board.writer}</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '12px' }}>{board.createDate}</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{board.likeCount ? board.likeCount : 0}</TableCell>
-                    <TableCell align='center' sx={{ fontSize: '14px' }}>{board.readCount ? board.readCount : 0}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardId}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.boardCategory}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.title} [{board.comments.length}]</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.writer}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.createDate}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.likes.length}</TableCell>
+                    <TableCell align='center' sx={{ fontSize: '13px' }}>{board.readCount}</TableCell>
                   </TableRow>
                 )))}
             </TableBody>
