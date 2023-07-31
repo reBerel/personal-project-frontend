@@ -1,4 +1,4 @@
-import { AlertTitle, CircularProgress, Container, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
+import { AlertTitle, CircularProgress, Container, Grid, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, createTheme } from '@mui/material'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -145,7 +145,9 @@ const UserBookmark = () => {
           </TableBody>
         </Table>
       </TableContainer>
-        <Pagination page={page} count={totalPages} siblingCount={2} boundaryCount={1} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton sx={{ marginTop: '0.5rem' }}/>
+      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
+        <Pagination page={page} count={1} siblingCount={2} boundaryCount={2} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton />
+      </Grid>
       </Container>
     </ThemeProvider>
   )
