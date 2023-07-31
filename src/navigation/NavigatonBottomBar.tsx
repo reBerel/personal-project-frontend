@@ -17,11 +17,11 @@ export default function LabelBottomNavigation() {
     <RootContainer >
       <StyledBottomNavigation sx={{background: 'rgba(0, 0, 0, 0)' , position: 'relative', transform: 'translateY(0%)', display: "flex", alignItems: 'center', justifyContent: 'center', marginTop: '5rem', borderTop: '1.5px solid #6BB07B' }}>
         <Box sx={{ margin: '20px' }}>
-          <Button component={Link} to="https://github.com/reBerel" aria-label="mygithub">
+          <Button component={Link} target='_blank' to="https://github.com/reBerel" aria-label="mygithub">
             github
           </Button>
-          <Button component={Link} to="https://github.com/EDDI-RobotAcademy/personal-project-backend">backend</Button>
-          <Button component={Link} to="https://github.com/EDDI-RobotAcademy/personal-project-frontend">frontend</Button>
+          <Button component={Link} target='_blank' to="https://github.com/EDDI-RobotAcademy/personal-project-backend">backend</Button>
+          <Button component={Link} target='_blank' to="https://github.com/EDDI-RobotAcademy/personal-project-frontend">frontend</Button>
         </Box>
       </StyledBottomNavigation>
     </RootContainer>
