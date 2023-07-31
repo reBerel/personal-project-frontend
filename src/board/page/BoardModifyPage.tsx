@@ -55,10 +55,10 @@ const BoardModifyPage = () => {
   const navigate = useNavigate()
   const { boardId } = useParams<RouteParams>()
   const queryClient = useQueryClient()
-  
+
   const { data: board, isLoading } = useBoardQuery(boardId || '')
   const mutation = useBoardUpdateMutation()
-  const ckeditor = useCkeditor(false,board?.content||'');
+  const ckeditor = useCkeditor(false, board?.content || '');
 
   const [title, setTitle] = useState(board?.title || '')
   const [content, setContent] = useState(board?.content || '')
@@ -77,23 +77,23 @@ const BoardModifyPage = () => {
       const updateData = {
         boardId,
         title,
-        content: ckeditor?.getData()||'',
+        content: ckeditor?.getData() || '',
         writer,
         boardCategory,
       };
 
       await mutation.mutateAsync(updateData);
-      queryClient.invalidateQueries(['board', boardId]);  
+      queryClient.invalidateQueries(['board', boardId]);
       navigate(`/key-we-board-page/read/${boardId}`);
     }
   }
   const handleDeleteClick = async () => {
-    await deleteBoard(boardId || '')
-    queryClient.invalidateQueries('boardList')
     const resuit = window.confirm('정말로 삭제 하시겠습니까?')
 
     if (resuit === true) {
       alert("삭제")
+      await deleteBoard(boardId || '')
+      queryClient.invalidateQueries('boardList')
       navigate("/key-we-board-page/list")
     } else {
       alert('취소')

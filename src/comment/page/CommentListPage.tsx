@@ -102,8 +102,7 @@ const CommentListPage = ({comments}:{comments:Comment[]}) => {
                     <TableRow style={{ cursor: 'pointer' }}>
                       {
                         editComment.commentId!==comment.commentId?
-                        <TextField 
-                          disabled={true} value={comment.content} multiline minRows={1} maxRows={5} sx={{ width: '100%', outline:'none' }} />
+                        <TableCell align='left' sx={{ fontSize: '14px' }}>{comment.content} </TableCell>
                         :
                         <TextField 
                         disabled={false} 

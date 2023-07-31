@@ -46,7 +46,7 @@ const CommentPage = () => {
       userId: user.userId,
       boardId: boardId ? parseInt(boardId, 10) : 0,
     };
-    await mutation.mutateAsync(data);
+    if(data.content) await mutation.mutateAsync(data);
     queryClient.invalidateQueries(['board', boardId]);
     setContent('');
   };

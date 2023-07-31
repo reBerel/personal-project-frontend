@@ -51,7 +51,7 @@ const useCkeditor = (readonly:boolean,content:string): ClassicEditor | undefined
           ]
         },
         // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-        placeholder: !readonly?'로딩중':'로딩중',
+        placeholder: readonly?'로딩중':'내용을 입력해주세요.',
         // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
         fontFamily: {
           options: [

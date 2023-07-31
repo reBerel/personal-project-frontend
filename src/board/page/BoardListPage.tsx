@@ -205,14 +205,14 @@ const BoardListPage = () => {
           <Grid item xs={4}>
             <Box />
           </Grid>
-          <Grid item xs={5}>
+          {/* <Grid item xs={5}>
             <BoardSearchComponent />
-          </Grid>
+          </Grid> */}
           <Grid item xs={2}>
             <Box />
           </Grid>
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
-            <Pagination page={page} count={totalPages} siblingCount={2} boundaryCount={2} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton />
+            <Pagination page={page} count={1} siblingCount={2} boundaryCount={2} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton />
           </Grid>
           <Grid item xs={2}>
             <Box />

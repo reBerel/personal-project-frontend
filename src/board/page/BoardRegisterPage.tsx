@@ -55,7 +55,8 @@ const BoardRegisterPage = () => {
   const queryClient = useQueryClient()
   const mutation = useMutation(registerBoard, {
     onSuccess: (data) => {
-      queryClient.setQueryData('board', data)
+      queryClient.setQueryData('board', data);
+      
       navigate(`/key-we-board-page/read/${data.boardId}`)
     }
   })
@@ -83,7 +84,7 @@ const BoardRegisterPage = () => {
       content: ckeditor?.getData()||'',
       category: category,
     }
-    await mutation.mutateAsync(data)
+    if(data.title&&data.content) await mutation.mutateAsync(data)
   }
 
 
