@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import useUserStore from '../../store/UserStore'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import { useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
 
 const theme = createTheme({
   components: {
@@ -53,7 +54,7 @@ const UserProfile = () => {
                 <TableCell align='center' sx={{ fontSize: '16px', mb: '1rem' }}>이름: {user.name}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align='center' sx={{ fontSize: '16px', mb: '1rem' }}>이메일: {user.email || '구글 이메일입니다.'}</TableCell>
+                <TableCell align='center' sx={{ fontSize: '16px', mb: '1rem' }}>이메일: {user.email || getAuth().currentUser?.email || '구글이메일입니다.'}</TableCell>
               </TableRow>
             </TableHead>
           </Table>
